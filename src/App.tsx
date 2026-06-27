@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
+import "lenis/dist/lenis.css";
 import logoUrl from "../origami-labs/logo.png";
 const dashboardUrl = "/admin-dashboard.png";
 const paymentsDarkUrl = "/payments-dark.webp";
@@ -159,7 +161,34 @@ const faqs = [
 
 function App() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const lenisRef = useRef<Lenis | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const lenis = new Lenis({
+      lerp: 0.08,
+      wheelMultiplier: 0.85,
+      touchMultiplier: 1.1,
+    });
+
+    lenisRef.current = lenis;
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const updateLenis = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(updateLenis);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(updateLenis);
+      lenis.destroy();
+      lenisRef.current = null;
+    };
+  }, []);
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -193,52 +222,77 @@ function App() {
       });
 
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
-        gsap.from(element, {
-          y: -28,
-          autoAlpha: 0,
-          filter: "blur(18px)",
+        gsap.set(element, { y: -28, autoAlpha: 0, filter: "blur(18px)" });
+
+        const tween = gsap.to(element, {
+          y: 0,
+          autoAlpha: 1,
+          filter: "blur(0px)",
           duration: 0.82,
           ease: "power3.out",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: element,
-            start: "top 84%",
-            once: true,
-          },
+          paused: true,
+        });
+
+        ScrollTrigger.create({
+          trigger: element,
+          start: "top 82%",
+          end: "bottom 18%",
+          onEnter: () => tween.restart(),
+          onEnterBack: () => tween.restart(),
+          onLeave: () => tween.reverse(),
+          onLeaveBack: () => tween.reverse(),
         });
       });
 
       gsap.utils.toArray<HTMLElement>("[data-split-title]").forEach((title) => {
-        gsap.from(title.querySelectorAll(".split-word-inner"), {
-          yPercent: -110,
-          autoAlpha: 0,
-          filter: "blur(12px)",
+        const words = title.querySelectorAll(".split-word-inner");
+
+        gsap.set(words, { yPercent: -110, autoAlpha: 0, filter: "blur(12px)" });
+
+        const tween = gsap.to(words, {
+          yPercent: 0,
+          autoAlpha: 1,
+          filter: "blur(0px)",
           duration: 0.72,
           ease: "power3.out",
           stagger: 0.035,
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: title,
-            start: "top 86%",
-            once: true,
-          },
+          paused: true,
+        });
+
+        ScrollTrigger.create({
+          trigger: title,
+          start: "top 84%",
+          end: "bottom 16%",
+          onEnter: () => tween.restart(),
+          onEnterBack: () => tween.restart(),
+          onLeave: () => tween.reverse(),
+          onLeaveBack: () => tween.reverse(),
         });
       });
 
       gsap.utils.toArray<HTMLElement>("[data-stagger]").forEach((grid) => {
-        gsap.from(grid.children, {
-          y: 30,
-          autoAlpha: 0,
-          filter: "blur(18px)",
+        const items = Array.from(grid.children);
+
+        gsap.set(items, { y: 30, autoAlpha: 0, filter: "blur(18px)" });
+
+        const tween = gsap.to(items, {
+          y: 0,
+          autoAlpha: 1,
+          filter: "blur(0px)",
           duration: 0.82,
           ease: "power3.out",
           stagger: 0.07,
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: grid,
-            start: "top 82%",
-            once: true,
-          },
+          paused: true,
+        });
+
+        ScrollTrigger.create({
+          trigger: grid,
+          start: "top 80%",
+          end: "bottom 16%",
+          onEnter: () => tween.restart(),
+          onEnterBack: () => tween.restart(),
+          onLeave: () => tween.reverse(),
+          onLeaveBack: () => tween.reverse(),
         });
       });
 
@@ -249,47 +303,57 @@ function App() {
 
         if (!toggle || cards.length === 0) return;
 
+        gsap.set(toggle, { y: -18, autoAlpha: 0, filter: "blur(14px)" });
+        gsap.set(cards, { y: 44, autoAlpha: 0, filter: "blur(18px)" });
+
+        if (glow) {
+          gsap.set(glow, { scale: 0.82, autoAlpha: 0, filter: "blur(28px)" });
+        }
+
         const timeline = gsap.timeline({
+          paused: true,
+          defaults: {
+            ease: "power3.out",
+          },
           scrollTrigger: {
             trigger: section,
-            start: "top 76%",
-            once: true,
+            start: "top 74%",
+            end: "bottom 12%",
+            onEnter: () => timeline.restart(),
+            onEnterBack: () => timeline.restart(),
+            onLeave: () => timeline.reverse(),
+            onLeaveBack: () => timeline.reverse(),
           },
         });
 
         timeline
-          .from(toggle, {
-            y: -18,
-            autoAlpha: 0,
-            filter: "blur(14px)",
+          .to(toggle, {
+            y: 0,
+            autoAlpha: 1,
+            filter: "blur(0px)",
             duration: 0.62,
-            ease: "power3.out",
-            immediateRender: false,
           })
-          .from(
+          .to(
             cards,
             {
-              y: 44,
-              autoAlpha: 0,
-              filter: "blur(18px)",
+              y: 0,
+              autoAlpha: 1,
+              filter: "blur(0px)",
               duration: 0.82,
-              ease: "power3.out",
               stagger: 0.08,
-              immediateRender: false,
             },
             "-=0.12",
           );
 
         if (glow) {
-          timeline.from(
+          timeline.to(
             glow,
             {
-              scale: 0.82,
-              autoAlpha: 0,
-              filter: "blur(28px)",
+              scale: 1,
+              autoAlpha: 1,
+              filter: "blur(92px)",
               duration: 0.9,
               ease: "power2.out",
-              immediateRender: false,
             },
             "-=0.28",
           );
@@ -303,19 +367,30 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const scrollToHash = () => {
+    const scrollToHash = (immediate = false) => {
       const id = window.location.hash.slice(1);
       if (!id) return;
 
       window.requestAnimationFrame(() => {
-        document.getElementById(decodeURIComponent(id))?.scrollIntoView();
+        const target = document.getElementById(decodeURIComponent(id));
+        if (!target) return;
+
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(target, { offset: -88, immediate });
+          return;
+        }
+
+        target.scrollIntoView();
       });
     };
 
-    scrollToHash();
-    window.addEventListener("hashchange", scrollToHash);
+    scrollToHash(true);
 
-    return () => window.removeEventListener("hashchange", scrollToHash);
+    const handleHashChange = () => scrollToHash();
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   return (
