@@ -1,5 +1,6 @@
 node_modules/
 dist/
+Referencias/
 
 # Local context and briefing notes can contain personal data.
 *.md

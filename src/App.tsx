@@ -2,9 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import logoUrl from "../origami-labs/logo.png";
-import dashboardUrl from "../Referencias/Hero_files/admin-dashboard-1_Ijej.png";
-import paymentsDarkUrl from "../Referencias/Estrutura SaaS Informações_files/payments_WWoX.webp";
-import calendarDarkUrl from "../Referencias/Estrutura SaaS Informações_files/origin-cal-dark_WWoX.webp";
+const dashboardUrl = "/admin-dashboard.png";
+const paymentsDarkUrl = "/payments-dark.webp";
+const calendarDarkUrl = "/origin-cal-dark.webp";
 
 const WHATSAPP_URL =
   "https://wa.me/SEUNUMERO?text=Ol%C3%A1%2C%20quero%20uma%20an%C3%A1lise%20gratuita%20para%20entender%20qual%20solu%C3%A7%C3%A3o%20faz%20mais%20sentido%20para%20meu%20neg%C3%B3cio.";
@@ -199,6 +199,7 @@ function App() {
           filter: "blur(18px)",
           duration: 0.82,
           ease: "power3.out",
+          immediateRender: false,
           scrollTrigger: {
             trigger: element,
             start: "top 84%",
@@ -215,6 +216,7 @@ function App() {
           duration: 0.72,
           ease: "power3.out",
           stagger: 0.035,
+          immediateRender: false,
           scrollTrigger: {
             trigger: title,
             start: "top 86%",
@@ -231,6 +233,7 @@ function App() {
           duration: 0.82,
           ease: "power3.out",
           stagger: 0.07,
+          immediateRender: false,
           scrollTrigger: {
             trigger: grid,
             start: "top 82%",
@@ -239,9 +242,80 @@ function App() {
         });
       });
 
+      gsap.utils.toArray<HTMLElement>("[data-pricing]").forEach((section) => {
+        const toggle = section.querySelector(".pricing-toggle");
+        const cards = section.querySelectorAll(".pricing-card-shell");
+        const glow = section.querySelector(".pricing-feature-glow");
+
+        if (!toggle || cards.length === 0) return;
+
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top 76%",
+            once: true,
+          },
+        });
+
+        timeline
+          .from(toggle, {
+            y: -18,
+            autoAlpha: 0,
+            filter: "blur(14px)",
+            duration: 0.62,
+            ease: "power3.out",
+            immediateRender: false,
+          })
+          .from(
+            cards,
+            {
+              y: 44,
+              autoAlpha: 0,
+              filter: "blur(18px)",
+              duration: 0.82,
+              ease: "power3.out",
+              stagger: 0.08,
+              immediateRender: false,
+            },
+            "-=0.12",
+          );
+
+        if (glow) {
+          timeline.from(
+            glow,
+            {
+              scale: 0.82,
+              autoAlpha: 0,
+              filter: "blur(28px)",
+              duration: 0.9,
+              ease: "power2.out",
+              immediateRender: false,
+            },
+            "-=0.28",
+          );
+        }
+      });
+
+      ScrollTrigger.refresh();
     }, rootRef);
 
     return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    const scrollToHash = () => {
+      const id = window.location.hash.slice(1);
+      if (!id) return;
+
+      window.requestAnimationFrame(() => {
+        document.getElementById(decodeURIComponent(id))?.scrollIntoView();
+      });
+    };
+
+    scrollToHash();
+    window.addEventListener("hashchange", scrollToHash);
+
+    return () => window.removeEventListener("hashchange", scrollToHash);
   }, []);
 
   return (
@@ -526,7 +600,7 @@ function SolutionsSection() {
                 <li key={bullet}>{bullet}</li>
               ))}
             </ul>
-            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+            <a href={WHATSAPP_URL} className="btn-secondary" target="_blank" rel="noreferrer">
               Conversar sobre {solution.eyebrow.toLowerCase()}
             </a>
           </article>
@@ -641,7 +715,7 @@ function PricingSection() {
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
 
   return (
-    <section id="planos" className="pricing-section relative overflow-hidden border-b border-divider py-24 lg:py-32" aria-labelledby="planos-title">
+    <section id="planos" className="pricing-section relative overflow-hidden border-b border-divider py-24 lg:py-32" aria-labelledby="planos-title" data-pricing>
       <div className="site-container relative z-10">
         <SectionIntro
           center
@@ -650,7 +724,7 @@ function PricingSection() {
           text="A análise inicial evita vender ferramenta demais. Primeiro entendemos o gargalo, depois fechamos uma entrega objetiva."
         />
 
-        <div className="pricing-toggle" data-reveal>
+        <div className="pricing-toggle">
           <button type="button" className={billing === "monthly" ? "is-active" : ""} onClick={() => setBilling("monthly")}>
             <span>Mensal</span>
           </button>
@@ -659,9 +733,11 @@ function PricingSection() {
           </button>
         </div>
 
-        <div className="pricing-grid mt-14" data-stagger>
+        <div className="pricing-grid mt-14">
           {plans.map((plan) => (
-            <article key={plan.name} className={`pricing-card ${plan.featured ? "is-featured" : ""}`}>
+            <div key={plan.name} className={`pricing-card-shell ${plan.featured ? "is-featured" : ""}`}>
+              {plan.featured ? <span className="pricing-feature-glow" aria-hidden="true" /> : null}
+              <article className={`pricing-card ${plan.featured ? "is-featured" : ""}`}>
               <div>
                 <div className="pricing-card__top">
                   <h3>{plan.name}</h3>
@@ -670,7 +746,7 @@ function PricingSection() {
                 <p>{plan.fit}</p>
                 <strong>{plan.description}</strong>
               </div>
-              <a href={WHATSAPP_URL} className={plan.featured ? "btn-primary" : "btn-secondary"} target="_blank" rel="noreferrer">
+              <a href={WHATSAPP_URL} className="btn-primary" target="_blank" rel="noreferrer">
                 Solicitar análise
               </a>
               <ul>
@@ -678,7 +754,8 @@ function PricingSection() {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-            </article>
+              </article>
+            </div>
           ))}
         </div>
       </div>

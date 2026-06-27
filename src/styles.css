@@ -83,17 +83,16 @@
 
   .btn-primary,
   .btn-secondary {
-    @apply inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-lg text-sm font-bold transition;
+    @apply inline-flex h-10 items-center justify-center whitespace-nowrap rounded-full border px-5 text-sm font-medium transition-colors;
     max-inline-size: 100%;
-    padding-inline: clamp(1rem, 4vw, 1.25rem);
   }
 
   .btn-primary {
-    @apply bg-white text-black shadow-glow hover:-translate-y-0.5 hover:bg-ink;
+    @apply border-white bg-gradient-to-t from-neutral-100 to-white text-black hover:from-white hover:to-white;
   }
 
   .btn-secondary {
-    @apply border border-line bg-white/[0.035] text-white hover:-translate-y-0.5 hover:border-lineActive hover:bg-white/[0.07];
+    @apply border-line bg-neutral-900 text-gray-200 hover:border-lineActive hover:text-white;
   }
 
   .menu-button {
@@ -528,7 +527,7 @@
   }
 
   .solution-card a {
-    @apply mt-auto pt-10 text-sm font-bold text-white;
+    @apply mt-auto w-full;
   }
 
   .demo-grid {
@@ -671,6 +670,22 @@
 
   .pricing-toggle button span {
     @apply relative z-10;
+  }
+
+  .pricing-card-shell {
+    @apply relative z-10 flex;
+  }
+
+  .pricing-card-shell.is-featured {
+    @apply z-20;
+  }
+
+  .pricing-feature-glow {
+    @apply pointer-events-none absolute inset-x-[-18%] -top-20 h-64 rounded-full bg-white/20 opacity-80 blur-[92px];
+  }
+
+  .pricing-card-shell > .pricing-card {
+    @apply h-full w-full;
   }
 
   .pricing-card__top {
@@ -987,14 +1002,7 @@
 
     .orbit-node {
       @apply px-3 py-2 text-[9px];
-    }
-
-    .orbit-node--2 {
-      right: -18px;
-    }
-
-    .orbit-node--5 {
-      left: -20px;
+      transform: translate(-50%, -50%) rotate(var(--angle)) translateX(150px) rotate(var(--angle-negative));
     }
   }
 
