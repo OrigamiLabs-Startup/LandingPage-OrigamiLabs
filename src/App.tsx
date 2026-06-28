@@ -8,7 +8,7 @@ import "./styles.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const DEFAULT_WHATSAPP_MESSAGE =
-  "Olá, quero uma análise rápida para entender se preciso de uma página, agenda ou dashboard.";
+  "Olá, quero uma análise rápida para entender se preciso de uma página, agenda ou dashboard";
 
 const WHATSAPP_URL =
   import.meta.env.VITE_WHATSAPP_URL ||
@@ -33,15 +33,15 @@ const proofItems = [
 const pains = [
   {
     title: "Instagram não explica tudo",
-    text: "O cliente até se interessa, mas precisa garimpar informações básicas antes de confiar.",
+    text: "O cliente até se interessa, mas precisa garimpar informações básicas antes de confiar",
   },
   {
     title: "WhatsApp vira operação",
-    text: "Perguntas, horários, confirmações e pedidos ficam misturados na mesma conversa.",
+    text: "Perguntas, horários, confirmações e pedidos ficam misturados na mesma conversa",
   },
   {
     title: "A rotina depende da memória",
-    text: "O negócio funciona, mas parte da informação importante não está visível em lugar nenhum.",
+    text: "O negócio funciona, mas parte da informação importante não está visível em lugar nenhum",
   },
 ];
 
@@ -49,8 +49,8 @@ const solutions = [
   {
     name: "Origami Sites",
     eyebrow: "Presença",
-    title: "Landing pages e sites de apresentação para melhorar percepção e conversão.",
-    text: "Para negócios que precisam explicar melhor o que vendem e transformar interesse em conversa qualificada.",
+    title: "Landing pages e sites de apresentação para melhorar percepção e conversão",
+    text: "Para negócios que precisam explicar melhor o que vendem e transformar interesse em conversa qualificada",
     image: "/landing-slice.png",
     alt: "Trecho superior de landing page premium criada pela Origami Labs",
     bullets: ["Copy orientada a conversão", "Design responsivo", "Prova visual clara"],
@@ -58,8 +58,8 @@ const solutions = [
   {
     name: "Origami Agenda",
     eyebrow: "Atendimento",
-    title: "Agendas personalizadas para organizar horários, solicitações e atendimentos.",
-    text: "Para quem perde tempo controlando disponibilidade, confirmações e pedidos por mensagens soltas.",
+    title: "Agendas personalizadas para organizar horários, solicitações e atendimentos",
+    text: "Para quem perde tempo controlando disponibilidade, confirmações e pedidos por mensagens soltas",
     image: "/agenda.png",
     alt: "Interface de agenda personalizada com horários e solicitações",
     bullets: ["Horários claros", "Solicitações centralizadas", "Status de atendimento"],
@@ -67,8 +67,8 @@ const solutions = [
   {
     name: "Origami Dashboard",
     eyebrow: "Operação",
-    title: "Painéis internos para visualizar leads, propostas, rotina e indicadores simples.",
-    text: "Para quem precisa parar de depender de planilhas soltas e enxergar o que merece atenção.",
+    title: "Painéis internos para visualizar leads, propostas, rotina e indicadores simples",
+    text: "Para quem precisa parar de depender de planilhas soltas e enxergar o que merece atenção",
     image: "/dashboard.jpeg",
     alt: "Dashboard interno com leads, propostas e indicadores simples",
     bullets: ["Visão de pipeline", "Prioridades do dia", "Indicadores essenciais"],
@@ -79,21 +79,21 @@ const plans = [
   {
     name: "Presença",
     fit: "Site de conversão",
-    description: "Para quem precisa parecer profissional e receber conversas melhores.",
+    description: "Para quem precisa parecer profissional e receber conversas melhores",
     items: ["Landing page completa", "Copy de oferta", "Prova visual", "Publicação assistida"],
     featured: false,
   },
   {
     name: "Operação",
     fit: "Agenda ou dashboard",
-    description: "Para quem já vende, mas perde tempo organizando atendimento e rotina.",
+    description: "Para quem já vende, mas perde tempo organizando atendimento e rotina",
     items: ["Mapeamento do fluxo", "Interface sob medida", "Dados essenciais", "Treinamento de uso"],
     featured: true,
   },
   {
     name: "Sistema leve",
     fit: "Estrutura combinada",
-    description: "Para negócios que precisam unir vitrine, entrada de lead e controle interno.",
+    description: "Para negócios que precisam unir vitrine, entrada de lead e controle interno",
     items: ["Landing + ferramenta", "Painel simples", "Automações pontuais", "Evolução por etapas"],
     featured: false,
   },
@@ -103,27 +103,27 @@ const faqs = [
   {
     question: "A Origami Labs faz apenas sites?",
     answer:
-      "Não. A Origami Labs cria páginas, agendas e painéis simples. O foco é escolher a estrutura digital que resolve melhor o problema atual do negócio.",
+      "Não, a Origami Labs cria páginas, agendas e painéis simples, com foco em escolher a estrutura digital que resolve melhor o problema atual do negócio",
   },
   {
     question: "Preciso saber exatamente o que quero antes de chamar?",
     answer:
-      "Não. A conversa inicial existe justamente para entender se você precisa de presença, atendimento, organização ou uma combinação enxuta.",
+      "Não, a conversa inicial existe justamente para entender se você precisa de presença, atendimento, organização ou uma combinação enxuta",
   },
   {
     question: "A agenda coleta dados sensíveis?",
     answer:
-      "Não é essa a proposta. Os exemplos usam apenas informações operacionais como nome, serviço, data, horário e status.",
+      "Não é essa a proposta, os exemplos usam apenas informações operacionais como nome, serviço, data, horário e status",
   },
   {
     question: "Os planos têm preço fixo?",
     answer:
-      "A entrega é definida por escopo. Depois da análise inicial, você recebe uma proposta clara com o que será criado e o que fica fora.",
+      "A entrega é definida por escopo, depois da análise inicial você recebe uma proposta clara com o que será criado e o que fica fora",
   },
   {
     question: "O site fica pronto para WhatsApp?",
     answer:
-      "Sim. A conversão principal é pensada para WhatsApp, com chamadas objetivas e links configuráveis.",
+      "Sim, a conversão principal é pensada para WhatsApp, com chamadas objetivas e links configuráveis",
   },
 ];
 
@@ -178,11 +178,16 @@ function App() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const context = gsap.context(() => {
       if (reduceMotion) {
-        gsap.set("[data-reveal], [data-stagger] > *, .site-header, .hero-reveal, .hero-product", {
-          autoAlpha: 1,
-          y: 0,
-          filter: "blur(0px)",
-        });
+        gsap.set(
+          "[data-reveal], [data-stagger] > *, [data-split-title] .split-word-inner, [data-pricing] .pricing-card, [data-pricing] .pricing-feature-glow, .site-header, .hero-reveal, .hero-product",
+          {
+            autoAlpha: 1,
+            y: 0,
+            yPercent: 0,
+            scale: 1,
+            filter: "blur(0px)",
+          },
+        );
         return;
       }
 
@@ -212,51 +217,145 @@ function App() {
       });
 
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((item) => {
-        gsap.from(item, {
+        gsap.set(item, {
           y: -28,
           autoAlpha: 0,
           filter: "blur(18px)",
+        });
+
+        const tween = gsap.to(item, {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
           duration: 0.82,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 86%",
-            once: true,
-          },
+          paused: true,
+        });
+
+        ScrollTrigger.create({
+          trigger: item,
+          start: "top 82%",
+          end: "bottom 18%",
+          onEnter: () => tween.restart(),
+          onEnterBack: () => tween.restart(),
+          onLeave: () => tween.reverse(),
+          onLeaveBack: () => tween.reverse(),
         });
       });
 
       gsap.utils.toArray<HTMLElement>("[data-split-title]").forEach((title) => {
         const words = title.querySelectorAll(".split-word-inner");
-        gsap.from(words, {
+        gsap.set(words, {
           yPercent: -110,
           autoAlpha: 0,
           filter: "blur(12px)",
+        });
+
+        const tween = gsap.to(words, {
+          yPercent: 0,
+          autoAlpha: 1,
+          filter: "blur(0px)",
           duration: 0.72,
           ease: "power3.out",
           stagger: 0.035,
-          scrollTrigger: {
-            trigger: title,
-            start: "top 86%",
-            once: true,
-          },
+          paused: true,
+        });
+
+        ScrollTrigger.create({
+          trigger: title,
+          start: "top 84%",
+          end: "bottom 16%",
+          onEnter: () => tween.restart(),
+          onEnterBack: () => tween.restart(),
+          onLeave: () => tween.reverse(),
+          onLeaveBack: () => tween.reverse(),
         });
       });
 
       gsap.utils.toArray<HTMLElement>("[data-stagger]").forEach((group) => {
         const items = Array.from(group.children);
-        gsap.from(items, {
+        gsap.set(items, {
           y: 30,
           autoAlpha: 0,
           filter: "blur(18px)",
+        });
+
+        const tween = gsap.to(items, {
+          y: 0,
+          autoAlpha: 1,
+          filter: "blur(0px)",
           duration: 0.82,
           ease: "power3.out",
           stagger: 0.07,
-          scrollTrigger: {
-            trigger: group,
-            start: "top 84%",
-            once: true,
-          },
+          paused: true,
+        });
+
+        ScrollTrigger.create({
+          trigger: group,
+          start: "top 80%",
+          end: "bottom 16%",
+          onEnter: () => tween.restart(),
+          onEnterBack: () => tween.restart(),
+          onLeave: () => tween.reverse(),
+          onLeaveBack: () => tween.reverse(),
+        });
+      });
+
+      gsap.utils.toArray<HTMLElement>("[data-pricing]").forEach((section) => {
+        const cards = section.querySelectorAll(".pricing-card");
+        const glow = section.querySelector(".pricing-feature-glow");
+
+        if (cards.length === 0) return;
+
+        gsap.set(cards, {
+          y: 44,
+          autoAlpha: 0,
+          filter: "blur(18px)",
+        });
+
+        if (glow) {
+          gsap.set(glow, {
+            scale: 0.82,
+            autoAlpha: 0,
+            filter: "blur(28px)",
+          });
+        }
+
+        const timeline = gsap.timeline({
+          paused: true,
+          defaults: { ease: "power3.out" },
+        });
+
+        timeline.to(cards, {
+          y: 0,
+          autoAlpha: 1,
+          filter: "blur(0px)",
+          duration: 0.82,
+          stagger: 0.08,
+        });
+
+        if (glow) {
+          timeline.to(
+            glow,
+            {
+              scale: 1,
+              autoAlpha: 1,
+              filter: "blur(92px)",
+              duration: 0.9,
+              ease: "power2.out",
+            },
+            "-=0.28",
+          );
+        }
+
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top 74%",
+          end: "bottom 12%",
+          onEnter: () => timeline.restart(),
+          onEnterBack: () => timeline.restart(),
+          onLeave: () => timeline.reverse(),
+          onLeaveBack: () => timeline.reverse(),
         });
       });
 
@@ -375,7 +474,7 @@ function App() {
               <p className="hero-reveal hero-subtitle">
                 Criamos sites, agendas administrativas e dashboards para transformar presença,
                 atendimento e organização em uma ferramenta para pequenos negócios faturarem mais
-                e se organizarem melhor.
+                e se organizarem melhor
               </p>
               <div className="hero-reveal hero-actions">
                 <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
@@ -435,8 +534,8 @@ function App() {
         <section className="section-shell" aria-labelledby="dor-title">
           <SectionIntro
             eyebrow="Identificação"
-            title="Seu serviço pode ser bom, mas a experiência ao redor dele ainda parece improvisada."
-            text="Muitos profissionais já vendem, atendem e entregam. O problema é que a forma de explicar, receber solicitações e organizar informações ainda depende de mensagens soltas."
+            title="Seu serviço pode ser bom, mas a experiência ao redor dele ainda parece improvisada"
+            text="Muitos profissionais já vendem, atendem e entregam, o problema é que a forma de explicar, receber solicitações e organizar informações ainda depende de mensagens soltas"
           />
 
           <div className="pain-grid" data-stagger>
@@ -455,8 +554,8 @@ function App() {
           <SectionIntro
             center
             eyebrow="Três caminhos"
-            title="Escolha a solução certa para você."
-            text="Cada solução resolve uma parte da experiência do seu negócio ou serviço: como ele se posiciona na internet, como ele atende e como ele organiza a rotina e clientes."
+            title="Escolha a solução certa para você"
+            text="Cada solução resolve uma parte da experiência do seu negócio ou serviço: como ele se posiciona na internet, como ele atende e como ele organiza a rotina e clientes"
           />
 
           <div className="solution-grid" data-stagger>
@@ -488,8 +587,8 @@ function App() {
         <section id="demos" className="section-shell demo-section" aria-labelledby="demos-title">
           <SectionIntro
             eyebrow="Demonstrações"
-            title="Agora que você já conhece as soluções, deixa eu te apresentar."
-            text="A landing page, a agenda e o dashboard aparecem como evidência do produto, mostrando como cada entrega pode ganhar forma visual e operacional."
+            title="Agora que você já conhece as soluções, deixa eu te apresentar"
+            text="A landing page, a agenda e o dashboard aparecem como evidência do produto, mostrando como cada entrega pode ganhar forma visual e operacional"
           />
 
           <div className="demo-grid" data-stagger>
@@ -513,8 +612,8 @@ function App() {
           <SectionIntro
             center
             eyebrow="Simplicidade e segurança"
-            title="O sistema deve organizar a rotina, não criar complexidade."
-            text="Nos exemplos de agenda e painéis, usamos apenas dados operacionais. A proposta é clareza, não acúmulo de informações sensíveis."
+            title="O sistema deve organizar a rotina, não criar complexidade"
+            text="Nos exemplos de agenda e painéis, usamos apenas dados operacionais, a proposta é clareza, não acúmulo de informações sensíveis"
           />
 
           <div className="security-grid" data-stagger>
@@ -526,16 +625,16 @@ function App() {
           </div>
         </section>
 
-        <section id="planos" className="pricing-section" aria-labelledby="planos-title">
+        <section id="planos" className="pricing-section" aria-labelledby="planos-title" data-pricing>
           <div className="site-container">
             <SectionIntro
               center
               eyebrow="Planos"
-              title="Planos por escopo, definidos a partir da necessidade real."
-              text="A análise inicial evita vender ferramenta demais. Primeiro entendemos o gargalo, depois fechamos uma entrega objetiva."
+              title="Planos por escopo, definidos a partir da necessidade real"
+              text="A análise inicial evita vender ferramenta demais, primeiro entendemos o gargalo, depois fechamos uma entrega objetiva"
             />
 
-            <div className="pricing-grid" data-stagger>
+            <div className="pricing-grid">
               {plans.map((plan) => (
                 <article className={`pricing-card ${plan.featured ? "is-featured" : ""}`} key={plan.name}>
                   {plan.featured && <span className="pricing-feature-glow" aria-hidden="true" />}
@@ -564,8 +663,8 @@ function App() {
           <SectionIntro
             center
             eyebrow="FAQ"
-            title="Dúvidas comuns antes de começar."
-            text="Use a busca se quiser encontrar um ponto específico sobre escopo, agenda, dados ou publicação."
+            title="Dúvidas comuns antes de começar"
+            text="Use a busca se quiser encontrar um ponto específico sobre escopo, agenda, dados ou publicação"
           />
 
           <div className="faq-panel" data-reveal>
@@ -580,7 +679,7 @@ function App() {
                 setFaqQuery(event.target.value);
                 setActiveFaq(0);
               }}
-              placeholder="Buscar dúvidas..."
+              placeholder="Buscar dúvidas"
             />
             <div className="faq-list">
               {filteredFaqs.length > 0 ? (
@@ -605,7 +704,7 @@ function App() {
                 })
               ) : (
                 <p className="faq-empty">
-                  Nenhuma dúvida encontrada. Me chama no WhatsApp e eu respondo direto por lá.
+                  Nenhuma dúvida encontrada, me chama no WhatsApp e eu respondo direto por lá
                 </p>
               )}
             </div>
@@ -621,7 +720,7 @@ function App() {
             />
             <p>
               Me chama no WhatsApp e receba uma análise rápida para entender se o melhor
-              próximo passo é uma página, uma agenda ou um painel de organização.
+              próximo passo é uma página, uma agenda ou um painel de organização
             </p>
             <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
               Quero uma análise gratuita
@@ -637,9 +736,9 @@ function App() {
             <Brand />
             <p>
               Sites, agendas e sistemas de organização para negócios que precisam transmitir
-              mais confiança.
+              mais confiança
             </p>
-            <small>Origami Labs © 2026. Todos os direitos reservados.</small>
+            <small>Origami Labs © 2026 Todos os direitos reservados</small>
           </div>
           <div className="footer-links">
             <div>
