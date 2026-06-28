@@ -21,7 +21,7 @@ const navItems = [
   { label: "FAQ", href: "#faq" },
 ];
 
-const dynamicWords = ["presença", "agenda", "ferramenta", "organização"];
+const dynamicWords = ["presença", "agenda", "ferramenta"];
 
 const proofItems = [
   "Visual premium",
@@ -52,6 +52,7 @@ const solutions = [
     title: "Landing pages e sites de apresentação para melhorar percepção e conversão",
     text: "Para negócios que precisam explicar melhor o que vendem e transformar interesse em conversa qualificada",
     image: "/landing-slice.png",
+    demoImage: "/landing-demo.png",
     alt: "Trecho superior de landing page premium criada pela Origami Labs",
     bullets: ["Copy orientada a conversão", "Design responsivo", "Prova visual clara"],
   },
@@ -61,6 +62,7 @@ const solutions = [
     title: "Agendas personalizadas para organizar horários, solicitações e atendimentos",
     text: "Para quem perde tempo controlando disponibilidade, confirmações e pedidos por mensagens soltas",
     image: "/agenda.png",
+    demoImage: "/agenda.png",
     alt: "Interface de agenda personalizada com horários e solicitações",
     bullets: ["Horários claros", "Solicitações centralizadas", "Status de atendimento"],
   },
@@ -70,6 +72,7 @@ const solutions = [
     title: "Painéis internos para visualizar leads, propostas, rotina e indicadores simples",
     text: "Para quem precisa parar de depender de planilhas soltas e enxergar o que merece atenção",
     image: "/dashboard.jpeg",
+    demoImage: "/dashboard.jpeg",
     alt: "Dashboard interno com leads, propostas e indicadores simples",
     bullets: ["Visão de pipeline", "Prioridades do dia", "Indicadores essenciais"],
   },
@@ -77,23 +80,29 @@ const solutions = [
 
 const plans = [
   {
-    name: "Presença",
-    fit: "Site de conversão",
+    name: "Origami Sites",
+    fit: "Presença digital",
+    price: "Landing",
     description: "Para quem precisa parecer profissional e receber conversas melhores",
+    includeLabel: "Inclui:",
     items: ["Landing page completa", "Copy de oferta", "Prova visual", "Publicação assistida"],
     featured: false,
   },
   {
-    name: "Operação",
-    fit: "Agenda ou dashboard",
+    name: "Origami Agenda",
+    fit: "Atendimento organizado",
+    price: "Agenda",
     description: "Para quem já vende, mas perde tempo organizando atendimento e rotina",
+    includeLabel: "Inclui:",
     items: ["Mapeamento do fluxo", "Interface sob medida", "Dados essenciais", "Treinamento de uso"],
     featured: true,
   },
   {
-    name: "Sistema leve",
-    fit: "Estrutura combinada",
+    name: "Origami Dashboard",
+    fit: "Controle interno",
+    price: "Painel",
     description: "Para negócios que precisam unir vitrine, entrada de lead e controle interno",
+    includeLabel: "Inclui:",
     items: ["Landing + ferramenta", "Painel simples", "Automações pontuais", "Evolução por etapas"],
     featured: false,
   },
@@ -131,19 +140,16 @@ function App() {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState(0);
-  const [faqQuery, setFaqQuery] = useState("");
+  const [heroIndex, setHeroIndex] = useState(0);
+  const [openDemo, setOpenDemo] = useState(0);
+  const [pricingMode, setPricingMode] = useState<"escopo" | "evolucao">("escopo");
   const [activeFaq, setActiveFaq] = useState(0);
   const ctaUrl = useMemo(() => WHATSAPP_URL, []);
 
-  const filteredFaqs = faqs.filter((faq) =>
-    `${faq.question} ${faq.answer}`.toLowerCase().includes(faqQuery.toLowerCase()),
-  );
-
   useEffect(() => {
     const tabTimer = window.setInterval(() => {
-      setActiveTab((current) => (current + 1) % solutions.length);
-    }, 2600);
+      setHeroIndex((current) => (current + 1) % dynamicWords.length);
+    }, 3400);
 
     return () => window.clearInterval(tabTimer);
   }, []);
@@ -179,7 +185,7 @@ function App() {
     const context = gsap.context(() => {
       if (reduceMotion) {
         gsap.set(
-          "[data-reveal], [data-stagger] > *, [data-split-title] .split-word-inner, [data-pricing] .pricing-card, [data-pricing] .pricing-feature-glow, .site-header, .hero-reveal, .hero-product",
+          "[data-reveal], [data-stagger] > *, [data-split-title] .split-word-inner, [data-pricing] .pricing-card-shell, [data-pricing] .pricing-toggle, [data-pricing] .pricing-feature-glow, .site-header, .hero-reveal, .hero-product",
           {
             autoAlpha: 1,
             y: 0,
@@ -218,16 +224,16 @@ function App() {
 
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((item) => {
         gsap.set(item, {
-          y: -28,
+          y: -6,
           autoAlpha: 0,
-          filter: "blur(18px)",
+          filter: "blur(10px)",
         });
 
         const tween = gsap.to(item, {
           autoAlpha: 1,
           y: 0,
           filter: "blur(0px)",
-          duration: 0.82,
+          duration: 0.68,
           ease: "power3.out",
           paused: true,
         });
@@ -302,7 +308,8 @@ function App() {
       });
 
       gsap.utils.toArray<HTMLElement>("[data-pricing]").forEach((section) => {
-        const cards = section.querySelectorAll(".pricing-card");
+        const cards = section.querySelectorAll(".pricing-card-shell");
+        const toggle = section.querySelector(".pricing-toggle");
         const glow = section.querySelector(".pricing-feature-glow");
 
         if (cards.length === 0) return;
@@ -312,6 +319,14 @@ function App() {
           autoAlpha: 0,
           filter: "blur(18px)",
         });
+
+        if (toggle) {
+          gsap.set(toggle, {
+            y: -6,
+            autoAlpha: 0,
+            filter: "blur(10px)",
+          });
+        }
 
         if (glow) {
           gsap.set(glow, {
@@ -325,6 +340,15 @@ function App() {
           paused: true,
           defaults: { ease: "power3.out" },
         });
+
+        if (toggle) {
+          timeline.to(toggle, {
+            y: 0,
+            autoAlpha: 1,
+            filter: "blur(0px)",
+            duration: 0.58,
+          });
+        }
 
         timeline.to(cards, {
           y: 0,
@@ -466,9 +490,11 @@ function App() {
                 Origami Labs / Soluções digitais objetivas
               </p>
               <h1 className="hero-reveal hero-title">
-                <span className="hero-title__line">Seu negócio precisa de uma</span>
+                <span className="hero-title__line">Seu negócio precisa de</span>
                 <span className="hero-title__line">
-                  <DynamicWord /> <span className="hero-title__accent">melhor</span>
+                  <span className="hero-title__muted">uma </span>
+                  <DynamicWord word={dynamicWords[heroIndex]} />{" "}
+                  <span className="hero-title__accent">melhor</span>
                 </span>
               </h1>
               <p className="hero-reveal hero-subtitle">
@@ -493,9 +519,9 @@ function App() {
                     key={solution.eyebrow}
                     type="button"
                     role="tab"
-                    aria-selected={activeTab === index}
-                    className={activeTab === index ? "is-active" : ""}
-                    onClick={() => setActiveTab(index)}
+                    aria-selected={heroIndex === index}
+                    className={heroIndex === index ? "is-active" : ""}
+                    onClick={() => setHeroIndex(index)}
                   >
                     <span>{index === 1 ? "Agenda" : index === 2 ? "Painel" : solution.eyebrow}</span>
                     <small>{solution.name.replace("Origami ", "")}</small>
@@ -505,8 +531,9 @@ function App() {
 
               <div className="hero-dashboard">
                 <img
-                  src={solutions[activeTab].image}
-                  alt={solutions[activeTab].alt}
+                  key={solutions[heroIndex].image}
+                  src={solutions[heroIndex].image}
+                  alt={solutions[heroIndex].alt}
                   loading="eager"
                 />
                 <span className="hero-guide hero-guide--top" aria-hidden="true" />
@@ -593,16 +620,36 @@ function App() {
 
           <div className="demo-grid" data-stagger>
             {solutions.map((solution, index) => (
-              <article className={`demo-card ${index === 0 ? "demo-card--wide" : ""}`} key={solution.name}>
+              <article
+                className={`demo-card ${index === 0 ? "demo-card--wide" : ""} ${openDemo === index ? "is-open" : ""}`}
+                key={solution.name}
+              >
                 <CornerMarks />
-                <div className="demo-card__copy">
+                <button
+                  type="button"
+                  className="demo-card__toggle"
+                  aria-expanded={openDemo === index}
+                  onClick={() => setOpenDemo(openDemo === index ? -1 : index)}
+                >
                   <span>{solution.name}</span>
-                  <h3>{solution.title}</h3>
-                  <p>{solution.text}</p>
+                  <i aria-hidden="true" />
+                </button>
+                <div className="demo-card__body">
+                  <div className="demo-card__inner">
+                    <div className="demo-card__copy">
+                      <span>{solution.name}</span>
+                      <h3>{solution.title}</h3>
+                      <p>{solution.text}</p>
+                    </div>
+                    <figure className={`demo-frame ${index === 0 ? "demo-frame--contain" : ""}`}>
+                      <img
+                        src={solution.demoImage}
+                        alt={solution.alt}
+                        loading={index === 0 ? "eager" : "lazy"}
+                      />
+                    </figure>
+                  </div>
                 </div>
-                <figure className="demo-frame">
-                  <img src={solution.image} alt={solution.alt} loading={index === 0 ? "eager" : "lazy"} />
-                </figure>
               </article>
             ))}
           </div>
@@ -626,6 +673,9 @@ function App() {
         </section>
 
         <section id="planos" className="pricing-section" aria-labelledby="planos-title" data-pricing>
+          <div className="pricing-grid-bg" aria-hidden="true" />
+          <div className="pricing-orb pricing-orb--ring" aria-hidden="true" />
+          <div className="pricing-orb pricing-orb--wash" aria-hidden="true" />
           <div className="site-container">
             <SectionIntro
               center
@@ -634,26 +684,52 @@ function App() {
               text="A análise inicial evita vender ferramenta demais, primeiro entendemos o gargalo, depois fechamos uma entrega objetiva"
             />
 
+            <div className="pricing-toggle" aria-label="Modelo de contratação">
+              <button
+                type="button"
+                className={pricingMode === "escopo" ? "is-active" : ""}
+                onClick={() => setPricingMode("escopo")}
+              >
+                <span>Projeto</span>
+              </button>
+              <button
+                type="button"
+                className={pricingMode === "evolucao" ? "is-active" : ""}
+                onClick={() => setPricingMode("evolucao")}
+              >
+                <span>Evolução</span>
+              </button>
+            </div>
+
             <div className="pricing-grid">
               {plans.map((plan) => (
-                <article className={`pricing-card ${plan.featured ? "is-featured" : ""}`} key={plan.name}>
-                  {plan.featured && <span className="pricing-feature-glow" aria-hidden="true" />}
-                  <div>
-                    <div className="pricing-card__top">
-                      <h3>{plan.name}</h3>
-                      <span>{plan.fit}</span>
+                <div className="pricing-card-shell" key={plan.name}>
+                  <article className={`pricing-card ${plan.featured ? "is-featured" : ""}`}>
+                    {plan.featured && <span className="pricing-feature-glow" aria-hidden="true" />}
+                    <div className="pricing-card__head">
+                      <div className="pricing-card__top">
+                        <h3>{plan.name}</h3>
+                        <span>{plan.fit}</span>
+                      </div>
+                      <div className="pricing-card__price">
+                        <strong>{plan.price}</strong>
+                        <small>{pricingMode === "escopo" ? "por escopo" : "evolução mensal"}</small>
+                      </div>
+                      <p>{plan.description}</p>
                     </div>
-                    <p>{plan.description}</p>
-                  </div>
-                  <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
-                    Solicitar análise
-                  </a>
-                  <ul>
-                    {plan.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </article>
+                    <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
+                      Solicitar análise
+                    </a>
+                    <div className="pricing-card__features">
+                      <h4>{plan.includeLabel}</h4>
+                      <ul>
+                        {plan.items.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </article>
+                </div>
               ))}
             </div>
           </div>
@@ -664,49 +740,30 @@ function App() {
             center
             eyebrow="FAQ"
             title="Dúvidas comuns antes de começar"
-            text="Use a busca se quiser encontrar um ponto específico sobre escopo, agenda, dados ou publicação"
+            text="Perguntas rápidas para entender escopo, agenda, dados e publicação antes da conversa inicial"
           />
 
           <div className="faq-panel" data-reveal>
-            <label className="sr-only" htmlFor="faq-search">
-              Buscar dúvidas
-            </label>
-            <input
-              id="faq-search"
-              type="search"
-              value={faqQuery}
-              onChange={(event) => {
-                setFaqQuery(event.target.value);
-                setActiveFaq(0);
-              }}
-              placeholder="Buscar dúvidas"
-            />
             <div className="faq-list">
-              {filteredFaqs.length > 0 ? (
-                filteredFaqs.map((faq, index) => {
-                  const isOpen = activeFaq === index;
+              {faqs.map((faq, index) => {
+                const isOpen = activeFaq === index;
 
-                  return (
-                    <article className={isOpen ? "is-open" : ""} key={faq.question}>
-                      <button
-                        type="button"
-                        aria-expanded={isOpen}
-                        onClick={() => setActiveFaq(isOpen ? -1 : index)}
-                      >
-                        <span>{faq.question}</span>
-                        <i aria-hidden="true" />
-                      </button>
-                      <div className="faq-answer" aria-hidden={!isOpen}>
-                        <p>{faq.answer}</p>
-                      </div>
-                    </article>
-                  );
-                })
-              ) : (
-                <p className="faq-empty">
-                  Nenhuma dúvida encontrada, me chama no WhatsApp e eu respondo direto por lá
-                </p>
-              )}
+                return (
+                  <article className={isOpen ? "is-open" : ""} key={faq.question}>
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      onClick={() => setActiveFaq(isOpen ? -1 : index)}
+                    >
+                      <span>{faq.question}</span>
+                      <i aria-hidden="true" />
+                    </button>
+                    <div className="faq-answer" aria-hidden={!isOpen}>
+                      <p>{faq.answer}</p>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -783,23 +840,14 @@ function Brand() {
   );
 }
 
-function DynamicWord() {
-  const [index, setIndex] = useState(0);
+function DynamicWord({ word }: { word: string }) {
   const measureRef = useRef<HTMLDivElement | null>(null);
   const [wordWidth, setWordWidth] = useState<number | null>(null);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setIndex((current) => (current + 1) % dynamicWords.length);
-    }, 1800);
-
-    return () => window.clearInterval(timer);
-  }, []);
 
   useLayoutEffect(() => {
     const measure = () => {
       const activeMeasure = measureRef.current?.querySelector<HTMLElement>(
-        `[data-word="${dynamicWords[index]}"]`,
+        `[data-word="${word}"]`,
       );
 
       if (activeMeasure) {
@@ -811,7 +859,7 @@ function DynamicWord() {
     window.addEventListener("resize", measure);
 
     return () => window.removeEventListener("resize", measure);
-  }, [index]);
+  }, [word]);
 
   return (
     <span
@@ -826,8 +874,8 @@ function DynamicWord() {
           </span>
         ))}
       </span>
-      <span className="dynamic-word__item" key={dynamicWords[index]}>
-        {dynamicWords[index]}
+      <span className="dynamic-word__item" key={word}>
+        {word}
       </span>
     </span>
   );
