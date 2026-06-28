@@ -4,9 +4,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import logoUrl from "../origami-labs/logo.png";
-const dashboardUrl = "/admin-dashboard.png";
-const paymentsDarkUrl = "/payments-dark.webp";
-const calendarDarkUrl = "/origin-cal-dark.webp";
+const dashboardUrl = "/dashboard.jpeg";
+const landingPageUrl = "/landing-page.png";
+const agendaUrl = "/agenda.png";
 
 const WHATSAPP_URL =
   "https://wa.me/SEUNUMERO?text=Ol%C3%A1%2C%20quero%20uma%20an%C3%A1lise%20gratuita%20para%20entender%20qual%20solu%C3%A7%C3%A3o%20faz%20mais%20sentido%20para%20meu%20neg%C3%B3cio.";
@@ -81,17 +81,17 @@ const solutions = [
 
 const processSteps = [
   {
-    label: "Conversa",
+    label: "Diagnóstico",
     title: "Entendimento rápido",
     text: "Mapeamos seu negócio, sua rotina e a dificuldade que mais prejudica a percepção do cliente.",
   },
   {
-    label: "Planejamento",
+    label: "Escopo",
     title: "Escopo enxuto",
     text: "Definimos se o melhor próximo passo é página, agenda, painel ou uma combinação simples.",
   },
   {
-    label: "Construção",
+    label: "Design",
     title: "Visual e estrutura",
     text: "Montamos a experiência com identidade premium, copy clara e fluxo pensado para uso real.",
   },
@@ -104,6 +104,34 @@ const processSteps = [
     label: "Resultado",
     title: "Mais clareza",
     text: "Seu negócio passa a explicar melhor o que vende, como atende e como organiza o próximo passo.",
+  },
+];
+
+const serviceDemos = [
+  {
+    name: "Origami Sites",
+    label: "Presença digital",
+    title: "Uma landing page completa para transformar serviço em percepção profissional.",
+    text: "Estrutura visual maior para apresentar oferta, diferenciais, seções de confiança e CTA direto.",
+    image: landingPageUrl,
+    alt: "Screenshot de uma landing page criada para representar o serviço Origami Sites",
+    featured: true,
+  },
+  {
+    name: "Origami Agenda",
+    label: "Atendimento organizado",
+    title: "Agenda personalizada para visualizar horários, pacientes e status da semana.",
+    text: "Ideal para profissionais que precisam transformar mensagens soltas em uma rotina de atendimento clara.",
+    image: agendaUrl,
+    alt: "Screenshot de agenda semanal administrativa usada como exemplo do serviço Origami Agenda",
+  },
+  {
+    name: "Origami Dashboard",
+    label: "Rotina visual",
+    title: "Dashboard para enxergar leads, propostas, receita e prioridades em um só lugar.",
+    text: "Um painel interno simples para acompanhar operação, próximos passos e indicadores do negócio.",
+    image: dashboardUrl,
+    alt: "Screenshot de dashboard operacional usado como exemplo do serviço Origami Dashboard",
   },
 ];
 
@@ -690,39 +718,25 @@ function DemoSection() {
     <section className="section-shell demo-section" aria-labelledby="demos-title">
       <SectionIntro
         eyebrow="Demonstrações"
-        title="Blocos visuais para mostrar o que muda na prática."
-        text="A referência de SaaS entra aqui como estrutura: cards com mockups, bordas finas, imagens escuras e conteúdo adaptado para Sites, Agenda e Organize."
+        title="Três entregas, três formas de organizar melhor a presença do seu negócio."
+        text="Cada bloco mostra uma direção real de produto: apresentação, atendimento e visão operacional. A ideia é deixar claro o que a Origami Labs pode construir para cada gargalo."
       />
 
       <div className="demo-grid mt-12" data-stagger>
-        <article className="demo-card demo-card--wide">
-          <CornerMarks />
-          <div>
-            <span>Origami Sites</span>
-            <h3>Apresentação clara antes da primeira conversa.</h3>
-          </div>
-          <img src={paymentsDarkUrl} alt="Mockup escuro de interface usado como referência para a apresentação de serviços" />
-        </article>
-
-        <article className="demo-card">
-          <CornerMarks />
-          <div>
-            <span>Origami Agenda</span>
-            <h3>Solicitações com data, horário e status.</h3>
-          </div>
-          <img src={calendarDarkUrl} alt="Mockup escuro de calendário usado como referência para agenda profissional" />
-        </article>
-
-        <article className="demo-card demo-card--mini">
-          <CornerMarks />
-          <h3>Rotina visual</h3>
-          <div className="mini-dashboard" aria-hidden="true">
-            {[42, 76, 58, 88, 64, 50].map((height) => (
-              <span key={height} style={{ height: `${height}%` }} />
-            ))}
-          </div>
-          <p>Pedidos, pendências e entradas ficam mais fáceis de acompanhar.</p>
-        </article>
+        {serviceDemos.map((demo) => (
+          <article key={demo.name} className={`demo-card ${demo.featured ? "demo-card--wide" : ""}`}>
+            <CornerMarks />
+            <div className="demo-card__copy">
+              <span>{demo.name}</span>
+              <h3>{demo.title}</h3>
+              <p>{demo.text}</p>
+              <small>{demo.label}</small>
+            </div>
+            <figure className="demo-frame">
+              <img src={demo.image} alt={demo.alt} loading={demo.featured ? "eager" : "lazy"} />
+            </figure>
+          </article>
+        ))}
       </div>
     </section>
   );
@@ -742,14 +756,21 @@ function ProcessSection() {
 
         <div className="orbit-card" data-reveal>
           <div className="orbit-stage" aria-hidden="true">
+            <div className="orbit-ring orbit-ring--outer" />
+            <div className="orbit-ring orbit-ring--middle" />
+            <div className="orbit-ring orbit-ring--inner" />
             <div className="orbit-center">
               <img src={logoUrl} alt="" />
+              <span>Origami</span>
             </div>
-            {processSteps.map((step, index) => (
-              <span key={step.label} className={`orbit-node orbit-node--${index + 1}`}>
-                {step.label}
-              </span>
-            ))}
+            <div className="orbit-track">
+              {processSteps.map((step, index) => (
+                <span key={step.label} className={`orbit-node orbit-node--${index + 1}`}>
+                  <strong>{step.label}</strong>
+                  <small>{String(index + 1).padStart(2, "0")}</small>
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
