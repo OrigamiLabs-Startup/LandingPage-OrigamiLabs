@@ -21,12 +21,7 @@ const navItems = [
   { label: "FAQ", href: "#faq" },
 ];
 
-const dynamicWords = [
-  { label: "presença melhor", solutionIndex: 0 },
-  { label: "agenda melhor", solutionIndex: 1 },
-  { label: "ferramenta melhor", solutionIndex: 2 },
-  { label: "organização melhor", solutionIndex: 2 },
-];
+const dynamicWords = ["presença melhor", "agenda melhor", "painel melhor"];
 
 const proofItems = [
   "Visual premium",
@@ -159,7 +154,6 @@ function App() {
     return () => window.clearInterval(tabTimer);
   }, []);
 
-  const activeHeroSolution = dynamicWords[heroWordIndex].solutionIndex;
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -231,16 +225,16 @@ function App() {
 
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((item) => {
         gsap.set(item, {
-          y: 6,
+          y: -18,
           autoAlpha: 0,
-          filter: "blur(6px)",
+          filter: "blur(14px)",
         });
 
         const tween = gsap.to(item, {
           autoAlpha: 1,
           y: -6,
           filter: "blur(0px)",
-          duration: 0.42,
+          duration: 0.48,
           ease: "power3.out",
           paused: true,
         });
@@ -256,18 +250,18 @@ function App() {
       gsap.utils.toArray<HTMLElement>("[data-split-title]").forEach((title) => {
         const words = title.querySelectorAll(".split-word-inner");
         gsap.set(words, {
-          y: 6,
+          yPercent: -105,
           autoAlpha: 0,
-          filter: "blur(6px)",
+          filter: "blur(12px)",
         });
 
         const tween = gsap.to(words, {
-          y: -6,
+          yPercent: 0,
           autoAlpha: 1,
           filter: "blur(0px)",
-          duration: 0.42,
+          duration: 0.55,
           ease: "power3.out",
-          stagger: 0.045,
+          stagger: 0.075,
           paused: true,
         });
 
@@ -282,7 +276,7 @@ function App() {
       gsap.utils.toArray<HTMLElement>("[data-stagger]").forEach((group) => {
         const items = Array.from(group.children);
         gsap.set(items, {
-          y: 30,
+          y: -24,
           autoAlpha: 0,
           filter: "blur(18px)",
         });
@@ -313,7 +307,7 @@ function App() {
         if (cards.length === 0) return;
 
         gsap.set(cards, {
-          y: 44,
+          y: -28,
           autoAlpha: 0,
           filter: "blur(18px)",
         });
@@ -441,7 +435,7 @@ function App() {
             <a className="nav-link" href="#faq">
               Dúvidas
             </a>
-            <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
+            <a className="btn-primary" href={ctaUrl} target="_blank" rel="noopener noreferrer">
               Análise gratuita
             </a>
           </div>
@@ -458,7 +452,7 @@ function App() {
           </button>
         </nav>
 
-        <a className="mobile-cta" href={ctaUrl} target="_blank" rel="noreferrer">
+        <a className="mobile-cta" href={ctaUrl} target="_blank" rel="noopener noreferrer">
           Contato
         </a>
 
@@ -468,7 +462,7 @@ function App() {
               {item.label}
             </a>
           ))}
-          <a href={ctaUrl} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>
+          <a href={ctaUrl} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)}>
             Análise gratuita
           </a>
         </div>
@@ -486,14 +480,14 @@ function App() {
               </p>
               <h1 className="hero-reveal hero-title">
                 <span className="sr-only">
-                  Seu negócio precisa de uma presença, agenda, ferramenta ou organização melhor
+                  Seu negócio precisa de uma presença, agenda ou painel melhor
                 </span>
                 <span className="hero-title__line" aria-hidden="true">
                   Seu negócio precisa de
                 </span>
                 <span className="hero-title__line" aria-hidden="true">
                   <span className="hero-title__muted">uma </span>
-                  <DynamicWord word={dynamicWords[heroWordIndex].label} />
+                  <DynamicWord word={dynamicWords[heroWordIndex]} />
                 </span>
               </h1>
               <p className="hero-reveal hero-subtitle">
@@ -502,7 +496,7 @@ function App() {
                 e se organizarem melhor
               </p>
               <div className="hero-reveal hero-actions">
-                <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
+                <a className="btn-primary" href={ctaUrl} target="_blank" rel="noopener noreferrer">
                   Quero uma análise gratuita
                 </a>
                 <a className="btn-secondary" href="#solucoes">
@@ -512,35 +506,10 @@ function App() {
             </div>
 
             <div className="hero-product">
-              <div className="hero-tabs" role="tablist" aria-label="Demonstrações Origami">
-                {solutions.map((solution, index) => (
-                  <button
-                    key={solution.eyebrow}
-                    id={`hero-tab-${index}`}
-                    type="button"
-                    role="tab"
-                    aria-selected={activeHeroSolution === index}
-                    aria-controls={`hero-panel-${index}`}
-                    tabIndex={activeHeroSolution === index ? 0 : -1}
-                    className={activeHeroSolution === index ? "is-active" : ""}
-                    onClick={() => setHeroWordIndex(index)}
-                  >
-                    <span>{index === 1 ? "Agenda" : index === 2 ? "Painel" : solution.eyebrow}</span>
-                    <small>{solution.name.replace("Origami ", "")}</small>
-                  </button>
-                ))}
-              </div>
-
-              <div
-                id={`hero-panel-${activeHeroSolution}`}
-                className="hero-dashboard"
-                role="tabpanel"
-                aria-labelledby={`hero-tab-${activeHeroSolution}`}
-              >
+              <div className="hero-dashboard" aria-label="Demonstração do dashboard Origami">
                 <img
-                  key={solutions[activeHeroSolution].image}
-                  src={solutions[activeHeroSolution].image}
-                  alt={solutions[activeHeroSolution].alt}
+                  src="/dashboard.jpeg"
+                  alt="Dashboard interno com leads, propostas e indicadores simples"
                   loading="eager"
                 />
                 <span className="hero-guide hero-guide--top" aria-hidden="true" />
@@ -610,7 +579,7 @@ function App() {
                     <li key={bullet}>{bullet}</li>
                   ))}
                 </ul>
-                <a className="btn-secondary" href={ctaUrl} target="_blank" rel="noreferrer">
+                <a className="btn-secondary" href={ctaUrl} target="_blank" rel="noopener noreferrer">
                   Conversar sobre {solution.eyebrow.toLowerCase()}
                 </a>
               </article>
@@ -720,18 +689,18 @@ function App() {
                       </div>
                       <div className="pricing-card__price">
                         <strong>{plan.price}</strong>
-                        <small>{pricingMode === "escopo" ? "por escopo" : "evolução mensal"}</small>
+                        <small>/{pricingMode === "escopo" ? "projeto" : "mês"}</small>
                       </div>
                       <p>{plan.description}</p>
                     </div>
-                    <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
+                    <a className={plan.featured ? "btn-primary" : "btn-secondary"} href={ctaUrl} target="_blank" rel="noopener noreferrer">
                       Solicitar análise
                     </a>
                     <div className="pricing-card__features">
                       <h4>{plan.includeLabel}</h4>
                       <ul>
                         {plan.items.map((item) => (
-                          <li key={item}>{item}</li>
+                          <li key={item}><span aria-hidden="true" />{item}</li>
                         ))}
                       </ul>
                     </div>
@@ -792,7 +761,7 @@ function App() {
               Me chama no WhatsApp e receba uma análise rápida para entender se o melhor
               próximo passo é uma página, uma agenda ou um painel de organização
             </p>
-            <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
+            <a className="btn-primary" href={ctaUrl} target="_blank" rel="noopener noreferrer">
               Quero uma análise gratuita
             </a>
           </div>
@@ -825,10 +794,10 @@ function App() {
             </div>
             <div>
               <h3>Contato</h3>
-              <a href={ctaUrl} target="_blank" rel="noreferrer">
+              <a href={ctaUrl} target="_blank" rel="noopener noreferrer">
                 WhatsApp
               </a>
-              <a href={ctaUrl} target="_blank" rel="noreferrer">
+              <a href={ctaUrl} target="_blank" rel="noopener noreferrer">
                 Análise gratuita
               </a>
             </div>
@@ -855,18 +824,33 @@ function Brand() {
 
 function DynamicWord({ word }: { word: string }) {
   const measureRef = useRef<HTMLDivElement | null>(null);
-  const previousWordRef = useRef(word);
+  const displayedWordRef = useRef(word);
+  const transitionTimerRef = useRef<number | null>(null);
   const [wordWidth, setWordWidth] = useState<number | null>(null);
+  const [displayedWord, setDisplayedWord] = useState(word);
   const [exitingWord, setExitingWord] = useState<string | null>(null);
 
   useEffect(() => {
-    if (previousWordRef.current === word) return;
+    if (displayedWordRef.current === word) return;
 
-    setExitingWord(previousWordRef.current);
-    previousWordRef.current = word;
+    if (transitionTimerRef.current) {
+      window.clearTimeout(transitionTimerRef.current);
+    }
 
-    const exitTimer = window.setTimeout(() => setExitingWord(null), 360);
-    return () => window.clearTimeout(exitTimer);
+    setExitingWord(displayedWordRef.current);
+    transitionTimerRef.current = window.setTimeout(() => {
+      displayedWordRef.current = word;
+      setDisplayedWord(word);
+      setExitingWord(null);
+      transitionTimerRef.current = null;
+    }, 320);
+
+    return () => {
+      if (transitionTimerRef.current) {
+        window.clearTimeout(transitionTimerRef.current);
+        transitionTimerRef.current = null;
+      }
+    };
   }, [word]);
 
   useLayoutEffect(() => {
@@ -894,20 +878,21 @@ function DynamicWord({ word }: { word: string }) {
     >
       <span ref={measureRef} className="dynamic-word__measure" aria-hidden="true">
         {dynamicWords.map((item) => (
-          <span data-word={item.label} key={item.label}>
-            {item.label}
+          <span data-word={item} key={item}>
+            {item}
           </span>
         ))}
       </span>
       <span className="dynamic-word__stage">
-        {exitingWord && (
+        {exitingWord ? (
           <span className="dynamic-word__item dynamic-word__item--exit" key={`exit-${exitingWord}`}>
             {exitingWord}
           </span>
+        ) : (
+          <span className="dynamic-word__item dynamic-word__item--enter" key={displayedWord}>
+            {displayedWord}
+          </span>
         )}
-        <span className="dynamic-word__item dynamic-word__item--enter" key={word}>
-          {word}
-        </span>
       </span>
     </span>
   );

@@ -395,7 +395,7 @@ img {
 }
 
 .hero-title {
-  max-width: 58rem;
+  max-width: 72rem;
   margin: 1.5rem auto 0;
   font-family: "Space Grotesk", Inter, system-ui, sans-serif;
   font-size: clamp(2.65rem, 6.5vw, 5.25rem);
@@ -407,6 +407,7 @@ img {
 
 .hero-title__line {
   display: block;
+  white-space: nowrap;
 }
 
 .dynamic-word {
@@ -491,13 +492,13 @@ img {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 64rem;
+  max-width: 72rem;
   margin: 3rem auto 0;
   overflow: visible;
 }
 
 .hero-tabs {
-  display: flex;
+  display: none;
   width: fit-content;
   max-width: 100%;
   flex-wrap: wrap;
@@ -547,13 +548,16 @@ img {
   isolation: isolate;
   margin-inline: -1px;
   overflow: hidden;
+  border: 1px solid #262626;
+  border-radius: var(--radius);
   background: #050505;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
 }
 
 .hero-dashboard img {
   width: 100%;
-  aspect-ratio: 16 / 10;
-  border: 1px solid #262626;
+  height: clamp(320px, 42vw, 560px);
+  border: 0;
   object-fit: cover;
   object-position: top;
   animation: hero-image-swap 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -792,6 +796,11 @@ img {
   margin-top: 3.5rem;
 }
 
+.pricing-section .pricing-grid {
+  max-width: 64rem;
+  margin: 3.5rem auto 0;
+}
+
 .pain-card,
 .corner-card {
   min-height: 18rem;
@@ -991,22 +1000,30 @@ li::before {
 }
 
 .demo-frame--contain {
-  display: grid;
-  place-items: start center;
+  display: block;
   background:
     radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 18rem),
     #050505;
 }
 
 .demo-frame--contain img {
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  object-position: top center;
 }
 
-.demo-card--wide .demo-frame,
+.demo-card--wide .demo-frame {
+  height: auto;
+  min-height: 0;
+}
+
 .demo-card--wide .demo-frame img {
-  min-height: 520px;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .demo-card:not(.demo-card--wide) .demo-frame {
@@ -1017,7 +1034,7 @@ li::before {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem;
-  max-width: 64rem;
+  max-width: 72rem;
   margin: 3rem auto 0;
 }
 
@@ -1025,9 +1042,10 @@ li::before {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--divider);
-  padding-block: clamp(5rem, 8vw, 8rem);
+  min-height: 100dvh;
+  padding-block: clamp(6rem, 9vw, 9rem);
   background:
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 34rem),
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.14), transparent 36rem),
     #050505;
 }
 
@@ -1061,21 +1079,21 @@ li::before {
 }
 
 .pricing-orb--ring {
-  top: -22rem;
-  width: 52rem;
-  height: 52rem;
-  border: 160px solid rgba(255, 255, 255, 0.13);
+  top: -23rem;
+  width: 68rem;
+  height: 68rem;
+  border: 190px solid rgba(255, 255, 255, 0.16);
   filter: blur(92px);
-  opacity: 0.7;
+  opacity: 0.72;
 }
 
 .pricing-orb--wash {
-  top: 9rem;
+  top: 12rem;
   width: 80%;
-  height: 34rem;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 70%);
+  height: 36rem;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 70%);
   mix-blend-mode: screen;
-  opacity: 0.42;
+  opacity: 0.48;
 }
 
 .pricing-toggle {
@@ -1130,11 +1148,11 @@ li::before {
 
 .pricing-card {
   display: flex;
-  min-height: 500px;
+  min-height: 520px;
   flex-direction: column;
   overflow: hidden;
   border-color: #262626;
-  background: linear-gradient(110deg, #101010, #1a1a1a 52%, #101010);
+  background: linear-gradient(110deg, #0f0f0f, #202020 52%, #0f0f0f);
   color: #fff;
   padding: 1.5rem;
   box-shadow: 0 18px 58px rgba(0, 0, 0, 0.38);
@@ -1144,10 +1162,10 @@ li::before {
   border-color: var(--divider-strong);
   z-index: 2;
   background:
-    radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.18), transparent 16rem),
-    linear-gradient(110deg, #121212, #242424 52%, #101010);
+    radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.2), transparent 16rem),
+    linear-gradient(110deg, #141414, #2c2c2c 52%, #101010);
   box-shadow:
-    0 -13px 140px rgba(255, 255, 255, 0.08),
+    0 -13px 180px rgba(255, 255, 255, 0.16),
     0 20px 70px rgba(0, 0, 0, 0.5);
 }
 
@@ -1157,7 +1175,7 @@ li::before {
   inset: -5rem -14% auto;
   height: 18rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.22);
   filter: blur(92px);
 }
 
@@ -1238,24 +1256,29 @@ li::before {
 .pricing-card__features li {
   display: flex;
   align-items: center;
+  gap: 0.65rem;
   min-height: 1.65rem;
-  padding-left: 1.35rem;
+  padding-left: 0;
   color: #d4d4d4;
   font-size: 0.9rem;
 }
 
 .pricing-card__features li::before {
-  top: 50%;
+  display: none;
+}
+
+.pricing-card__features li span {
   width: 0.56rem;
   height: 0.56rem;
-  transform: translateY(-50%);
+  flex: 0 0 0.56rem;
+  border-radius: 50%;
   background: #737373;
 }
 
 .faq-panel {
-  max-width: 42rem;
+  max-width: 48rem;
   margin: 3rem auto 0;
-  padding: 0.65rem;
+  padding: 0.75rem;
 }
 
 .faq-list {
@@ -1592,16 +1615,17 @@ li::before {
   }
 
   .hero-title {
-    max-width: 10.8ch;
+    max-width: min(100%, 25rem);
     margin-inline: auto;
-    overflow-wrap: anywhere;
-    font-size: clamp(1.82rem, 7.6vw, 2.3rem);
+    overflow-wrap: normal;
+    font-size: clamp(1.58rem, 7vw, 2.25rem);
     line-height: 1;
   }
 
   .hero-title__line {
     max-width: 100%;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
+    white-space: nowrap;
   }
 
   .hero-copy .eyebrow {
@@ -1635,15 +1659,16 @@ li::before {
     max-width: 100%;
   }
 
+  .hero-dashboard img {
+    height: clamp(220px, 60vw, 360px);
+  }
+
   .hero-guide {
     display: none;
   }
 
   .hero-tabs {
-    width: 100%;
-    min-width: 0;
-    display: grid;
-    grid-template-columns: 1fr;
+    display: none;
   }
 
   .hero-tabs button {
@@ -1682,9 +1707,14 @@ li::before {
     height: 210px;
   }
 
-  .demo-card--wide .demo-frame,
+  .demo-card--wide .demo-frame {
+    height: auto;
+    min-height: 0;
+  }
+
   .demo-card--wide .demo-frame img {
-    min-height: 380px;
+    height: auto;
+    min-height: 0;
   }
 
   .demo-card:not(.demo-card--wide) .demo-frame {
@@ -1759,9 +1789,14 @@ li::before {
     padding-top: 0.35rem;
   }
 
-  .demo-card--wide .demo-frame,
+  .demo-card--wide .demo-frame {
+    height: auto;
+    min-height: 0;
+  }
+
   .demo-card--wide .demo-frame img {
-    min-height: 340px;
+    height: auto;
+    min-height: 0;
   }
 }
 
