@@ -181,22 +181,7 @@ function App() {
   useEffect(() => {
     if (!rootRef.current) return;
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const context = gsap.context(() => {
-      if (reduceMotion) {
-        gsap.set(
-          "[data-reveal], [data-stagger] > *, [data-split-title] .split-word-inner, [data-pricing] .pricing-card-shell, [data-pricing] .pricing-toggle, [data-pricing] .pricing-feature-glow, .site-header, .hero-reveal, .hero-product",
-          {
-            autoAlpha: 1,
-            y: 0,
-            yPercent: 0,
-            scale: 1,
-            filter: "blur(0px)",
-          },
-        );
-        return;
-      }
-
       gsap.from(".site-header", {
         y: -18,
         autoAlpha: 0,
