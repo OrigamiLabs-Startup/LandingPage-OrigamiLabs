@@ -21,7 +21,12 @@ const navItems = [
   { label: "FAQ", href: "#faq" },
 ];
 
-const dynamicWords = ["presença", "agenda", "ferramenta"];
+const dynamicWords = [
+  { label: "presença melhor", solutionIndex: 0 },
+  { label: "agenda melhor", solutionIndex: 1 },
+  { label: "ferramenta melhor", solutionIndex: 2 },
+  { label: "organização melhor", solutionIndex: 2 },
+];
 
 const proofItems = [
   "Visual premium",
@@ -140,7 +145,7 @@ function App() {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [heroIndex, setHeroIndex] = useState(0);
+  const [heroWordIndex, setHeroWordIndex] = useState(0);
   const [openDemo, setOpenDemo] = useState(0);
   const [pricingMode, setPricingMode] = useState<"escopo" | "evolucao">("escopo");
   const [activeFaq, setActiveFaq] = useState(0);
@@ -148,11 +153,13 @@ function App() {
 
   useEffect(() => {
     const tabTimer = window.setInterval(() => {
-      setHeroIndex((current) => (current + 1) % dynamicWords.length);
+      setHeroWordIndex((current) => (current + 1) % dynamicWords.length);
     }, 3400);
 
     return () => window.clearInterval(tabTimer);
   }, []);
+
+  const activeHeroSolution = dynamicWords[heroWordIndex].solutionIndex;
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -224,16 +231,16 @@ function App() {
 
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((item) => {
         gsap.set(item, {
-          y: -6,
+          y: 6,
           autoAlpha: 0,
-          filter: "blur(10px)",
+          filter: "blur(6px)",
         });
 
         const tween = gsap.to(item, {
           autoAlpha: 1,
-          y: 0,
+          y: -6,
           filter: "blur(0px)",
-          duration: 0.68,
+          duration: 0.42,
           ease: "power3.out",
           paused: true,
         });
@@ -241,40 +248,34 @@ function App() {
         ScrollTrigger.create({
           trigger: item,
           start: "top 82%",
-          end: "bottom 18%",
+          once: true,
           onEnter: () => tween.restart(),
-          onEnterBack: () => tween.restart(),
-          onLeave: () => tween.reverse(),
-          onLeaveBack: () => tween.reverse(),
         });
       });
 
       gsap.utils.toArray<HTMLElement>("[data-split-title]").forEach((title) => {
         const words = title.querySelectorAll(".split-word-inner");
         gsap.set(words, {
-          yPercent: -110,
+          y: 6,
           autoAlpha: 0,
-          filter: "blur(12px)",
+          filter: "blur(6px)",
         });
 
         const tween = gsap.to(words, {
-          yPercent: 0,
+          y: -6,
           autoAlpha: 1,
           filter: "blur(0px)",
-          duration: 0.72,
+          duration: 0.42,
           ease: "power3.out",
-          stagger: 0.035,
+          stagger: 0.045,
           paused: true,
         });
 
         ScrollTrigger.create({
           trigger: title,
           start: "top 84%",
-          end: "bottom 16%",
+          once: true,
           onEnter: () => tween.restart(),
-          onEnterBack: () => tween.restart(),
-          onLeave: () => tween.reverse(),
-          onLeaveBack: () => tween.reverse(),
         });
       });
 
@@ -299,11 +300,8 @@ function App() {
         ScrollTrigger.create({
           trigger: group,
           start: "top 80%",
-          end: "bottom 16%",
+          once: true,
           onEnter: () => tween.restart(),
-          onEnterBack: () => tween.restart(),
-          onLeave: () => tween.reverse(),
-          onLeaveBack: () => tween.reverse(),
         });
       });
 
@@ -375,11 +373,8 @@ function App() {
         ScrollTrigger.create({
           trigger: section,
           start: "top 74%",
-          end: "bottom 12%",
+          once: true,
           onEnter: () => timeline.restart(),
-          onEnterBack: () => timeline.restart(),
-          onLeave: () => timeline.reverse(),
-          onLeaveBack: () => timeline.reverse(),
         });
       });
 
@@ -490,11 +485,15 @@ function App() {
                 Origami Labs / Soluções digitais objetivas
               </p>
               <h1 className="hero-reveal hero-title">
-                <span className="hero-title__line">Seu negócio precisa de</span>
-                <span className="hero-title__line">
+                <span className="sr-only">
+                  Seu negócio precisa de uma presença, agenda, ferramenta ou organização melhor
+                </span>
+                <span className="hero-title__line" aria-hidden="true">
+                  Seu negócio precisa de
+                </span>
+                <span className="hero-title__line" aria-hidden="true">
                   <span className="hero-title__muted">uma </span>
-                  <DynamicWord word={dynamicWords[heroIndex]} />{" "}
-                  <span className="hero-title__accent">melhor</span>
+                  <DynamicWord word={dynamicWords[heroWordIndex].label} />
                 </span>
               </h1>
               <p className="hero-reveal hero-subtitle">
@@ -517,11 +516,14 @@ function App() {
                 {solutions.map((solution, index) => (
                   <button
                     key={solution.eyebrow}
+                    id={`hero-tab-${index}`}
                     type="button"
                     role="tab"
-                    aria-selected={heroIndex === index}
-                    className={heroIndex === index ? "is-active" : ""}
-                    onClick={() => setHeroIndex(index)}
+                    aria-selected={activeHeroSolution === index}
+                    aria-controls={`hero-panel-${index}`}
+                    tabIndex={activeHeroSolution === index ? 0 : -1}
+                    className={activeHeroSolution === index ? "is-active" : ""}
+                    onClick={() => setHeroWordIndex(index)}
                   >
                     <span>{index === 1 ? "Agenda" : index === 2 ? "Painel" : solution.eyebrow}</span>
                     <small>{solution.name.replace("Origami ", "")}</small>
@@ -529,11 +531,16 @@ function App() {
                 ))}
               </div>
 
-              <div className="hero-dashboard">
+              <div
+                id={`hero-panel-${activeHeroSolution}`}
+                className="hero-dashboard"
+                role="tabpanel"
+                aria-labelledby={`hero-tab-${activeHeroSolution}`}
+              >
                 <img
-                  key={solutions[heroIndex].image}
-                  src={solutions[heroIndex].image}
-                  alt={solutions[heroIndex].alt}
+                  key={solutions[activeHeroSolution].image}
+                  src={solutions[activeHeroSolution].image}
+                  alt={solutions[activeHeroSolution].alt}
                   loading="eager"
                 />
                 <span className="hero-guide hero-guide--top" aria-hidden="true" />
@@ -753,12 +760,18 @@ function App() {
                     <button
                       type="button"
                       aria-expanded={isOpen}
+                      aria-controls={`faq-answer-${index}`}
                       onClick={() => setActiveFaq(isOpen ? -1 : index)}
                     >
                       <span>{faq.question}</span>
                       <i aria-hidden="true" />
                     </button>
-                    <div className="faq-answer" aria-hidden={!isOpen}>
+                    <div
+                      id={`faq-answer-${index}`}
+                      className="faq-answer"
+                      role="region"
+                      aria-hidden={!isOpen}
+                    >
                       <p>{faq.answer}</p>
                     </div>
                   </article>
@@ -842,7 +855,19 @@ function Brand() {
 
 function DynamicWord({ word }: { word: string }) {
   const measureRef = useRef<HTMLDivElement | null>(null);
+  const previousWordRef = useRef(word);
   const [wordWidth, setWordWidth] = useState<number | null>(null);
+  const [exitingWord, setExitingWord] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (previousWordRef.current === word) return;
+
+    setExitingWord(previousWordRef.current);
+    previousWordRef.current = word;
+
+    const exitTimer = window.setTimeout(() => setExitingWord(null), 360);
+    return () => window.clearTimeout(exitTimer);
+  }, [word]);
 
   useLayoutEffect(() => {
     const measure = () => {
@@ -864,18 +889,25 @@ function DynamicWord({ word }: { word: string }) {
   return (
     <span
       className="dynamic-word"
-      aria-live="polite"
+      aria-hidden="true"
       style={wordWidth ? { width: `${wordWidth}px` } : undefined}
     >
       <span ref={measureRef} className="dynamic-word__measure" aria-hidden="true">
-        {dynamicWords.map((word) => (
-          <span data-word={word} key={word}>
-            {word}
+        {dynamicWords.map((item) => (
+          <span data-word={item.label} key={item.label}>
+            {item.label}
           </span>
         ))}
       </span>
-      <span className="dynamic-word__item" key={word}>
-        {word}
+      <span className="dynamic-word__stage">
+        {exitingWord && (
+          <span className="dynamic-word__item dynamic-word__item--exit" key={`exit-${exitingWord}`}>
+            {exitingWord}
+          </span>
+        )}
+        <span className="dynamic-word__item dynamic-word__item--enter" key={word}>
+          {word}
+        </span>
       </span>
     </span>
   );
