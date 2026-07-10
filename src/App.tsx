@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -21,13 +21,11 @@ const navItems = [
   { label: "FAQ", href: "#faq" },
 ];
 
-const dynamicWords = ["presença", "agenda", "ferramenta"];
-
 const proofItems = [
-  "Visual premium",
-  "Escopo claro",
-  "Entrega objetiva",
-  "WhatsApp como conversão",
+  "Oferta mais clara",
+  "Visual responsivo",
+  "Escopo explicado",
+  "Próximo passo definido",
 ];
 
 const pains = [
@@ -80,30 +78,33 @@ const solutions = [
 
 const plans = [
   {
-    name: "Origami Sites",
+    name: "Landing Page",
     fit: "Presença digital",
-    price: "Landing",
-    description: "Para quem precisa parecer profissional e receber conversas melhores",
+    price: "A partir de R$ 497",
+    monthlyNote: "projeto por escopo",
+    description: "Página profissional para apresentar seu serviço, gerar confiança e direcionar clientes para o WhatsApp.",
     includeLabel: "Inclui:",
-    items: ["Landing page completa", "Copy de oferta", "Prova visual", "Publicação assistida"],
+    items: ["Página de apresentação", "Texto objetivo", "Visual responsivo", "Direcionamento para WhatsApp"],
     featured: false,
   },
   {
-    name: "Origami Agenda",
+    name: "Agenda Administrativa",
     fit: "Atendimento organizado",
-    price: "Agenda",
-    description: "Para quem já vende, mas perde tempo organizando atendimento e rotina",
+    price: "A partir de R$ 297",
+    monthlyNote: "implantação + mensalidade",
+    description: "Sistema simples para organizar horários, atendimentos e rotina do negócio.",
     includeLabel: "Inclui:",
-    items: ["Mapeamento do fluxo", "Interface sob medida", "Dados essenciais", "Treinamento de uso"],
+    items: ["Fluxo organizado", "Horários e atendimentos", "Rotina mais clara", "Orientação de uso"],
     featured: true,
   },
   {
-    name: "Origami Dashboard",
+    name: "Dashboard",
     fit: "Controle interno",
-    price: "Painel",
-    description: "Para negócios que precisam unir vitrine, entrada de lead e controle interno",
+    price: "A partir de R$ 497",
+    monthlyNote: "implantação + mensalidade",
+    description: "Painel personalizado para acompanhar informações importantes do negócio em um só lugar.",
     includeLabel: "Inclui:",
-    items: ["Landing + ferramenta", "Painel simples", "Automações pontuais", "Evolução por etapas"],
+    items: ["Informações reunidas", "Painel simples", "Visão do negócio", "Evolução por etapas"],
     featured: false,
   },
 ];
@@ -127,7 +128,7 @@ const faqs = [
   {
     question: "Os planos têm preço fixo?",
     answer:
-      "A entrega é definida por escopo, depois da análise inicial você recebe uma proposta clara com o que será criado e o que fica fora",
+      "Os valores exibidos são pontos de partida; depois da análise inicial você recebe uma proposta clara com escopo, implantação, mensalidade quando aplicável e o que fica fora",
   },
   {
     question: "O site fica pronto para WhatsApp?",
@@ -142,17 +143,8 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroIndex, setHeroIndex] = useState(0);
   const [openDemo, setOpenDemo] = useState(0);
-  const [pricingMode, setPricingMode] = useState<"escopo" | "evolucao">("escopo");
   const [activeFaq, setActiveFaq] = useState(0);
   const ctaUrl = useMemo(() => WHATSAPP_URL, []);
-
-  useEffect(() => {
-    const tabTimer = window.setInterval(() => {
-      setHeroIndex((current) => (current + 1) % dynamicWords.length);
-    }, 3400);
-
-    return () => window.clearInterval(tabTimer);
-  }, []);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -432,14 +424,14 @@ function App() {
               Dúvidas
             </a>
             <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
-              Análise gratuita
+              Análise inicial
             </a>
           </div>
 
           <button
             type="button"
             className="menu-button"
-            aria-label="Abrir menu"
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
             aria-controls="mobile-menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((value) => !value)}
@@ -459,7 +451,7 @@ function App() {
             </a>
           ))}
           <a href={ctaUrl} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>
-            Análise gratuita
+            Análise inicial
           </a>
         </div>
       </header>
@@ -475,21 +467,14 @@ function App() {
                 Origami Labs / Soluções digitais objetivas
               </p>
               <h1 className="hero-reveal hero-title">
-                <span className="hero-title__line">Seu negócio precisa de</span>
-                <span className="hero-title__line">
-                  <span className="hero-title__muted">uma </span>
-                  <DynamicWord word={dynamicWords[heroIndex]} />{" "}
-                  <span className="hero-title__accent">melhor</span>
-                </span>
+                Uma presença digital que explica o que você faz e conduz o próximo cliente ao próximo passo
               </h1>
               <p className="hero-reveal hero-subtitle">
-                Criamos sites, agendas administrativas e dashboards para transformar presença,
-                atendimento e organização em uma ferramenta para pequenos negócios faturarem mais
-                e se organizarem melhor
+                Criamos páginas, agendas administrativas e dashboards para pequenos negócios apresentarem melhor o serviço e organizarem a próxima conversa.
               </p>
               <div className="hero-reveal hero-actions">
                 <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
-                  Quero uma análise gratuita
+                  Quero uma análise inicial
                 </a>
                 <a className="btn-secondary" href="#solucoes">
                   Ver soluções
@@ -504,6 +489,7 @@ function App() {
                     key={solution.eyebrow}
                     type="button"
                     role="tab"
+                    aria-controls="hero-preview"
                     aria-selected={heroIndex === index}
                     className={heroIndex === index ? "is-active" : ""}
                     onClick={() => setHeroIndex(index)}
@@ -514,7 +500,12 @@ function App() {
                 ))}
               </div>
 
-              <div className="hero-dashboard">
+              <div
+                id="hero-preview"
+                className="hero-dashboard"
+                role="tabpanel"
+                aria-label={`${solutions[heroIndex].name} preview`}
+              >
                 <img
                   key={solutions[heroIndex].image}
                   src={solutions[heroIndex].image}
@@ -545,6 +536,7 @@ function App() {
 
         <section className="section-shell" aria-labelledby="dor-title">
           <SectionIntro
+            titleId="dor-title"
             eyebrow="Identificação"
             title="Seu serviço pode ser bom, mas a experiência ao redor dele ainda parece improvisada"
             text="Muitos profissionais já vendem, atendem e entregam, o problema é que a forma de explicar, receber solicitações e organizar informações ainda depende de mensagens soltas"
@@ -564,6 +556,7 @@ function App() {
 
         <section id="solucoes" className="section-shell" aria-labelledby="solucoes-title">
           <SectionIntro
+            titleId="solucoes-title"
             center
             eyebrow="Três caminhos"
             title="Escolha a solução certa para você"
@@ -598,9 +591,10 @@ function App() {
 
         <section id="demos" className="section-shell demo-section" aria-labelledby="demos-title">
           <SectionIntro
+            titleId="demos-title"
             eyebrow="Demonstrações"
-            title="Agora que você já conhece as soluções, deixa eu te apresentar"
-            text="A landing page, a agenda e o dashboard aparecem como evidência do produto, mostrando como cada entrega pode ganhar forma visual e operacional"
+            title="Veja como cada solução ganha forma"
+            text="Use as demonstrações para entender o tipo de entrega, o nível de organização e o próximo passo de cada solução."
           />
 
           <div className="demo-grid" data-stagger>
@@ -642,6 +636,7 @@ function App() {
 
         <section className="section-shell security-section" aria-labelledby="seguranca-title">
           <SectionIntro
+            titleId="seguranca-title"
             center
             eyebrow="Simplicidade e segurança"
             title="O sistema deve organizar a rotina, não criar complexidade"
@@ -663,28 +658,12 @@ function App() {
           <div className="pricing-orb pricing-orb--wash" aria-hidden="true" />
           <div className="site-container">
             <SectionIntro
+              titleId="planos-title"
               center
               eyebrow="Planos"
-              title="Planos por escopo, definidos a partir da necessidade real"
-              text="A análise inicial evita vender ferramenta demais, primeiro entendemos o gargalo, depois fechamos uma entrega objetiva"
+              title="Comece pela entrega que resolve o gargalo atual"
+              text="Os valores abaixo são pontos de partida. O escopo final, a implantação e qualquer mensalidade são confirmados antes da contratação."
             />
-
-            <div className="pricing-toggle" aria-label="Modelo de contratação">
-              <button
-                type="button"
-                className={pricingMode === "escopo" ? "is-active" : ""}
-                onClick={() => setPricingMode("escopo")}
-              >
-                <span>Projeto</span>
-              </button>
-              <button
-                type="button"
-                className={pricingMode === "evolucao" ? "is-active" : ""}
-                onClick={() => setPricingMode("evolucao")}
-              >
-                <span>Evolução</span>
-              </button>
-            </div>
 
             <div className="pricing-grid">
               {plans.map((plan) => (
@@ -698,7 +677,7 @@ function App() {
                       </div>
                       <div className="pricing-card__price">
                         <strong>{plan.price}</strong>
-                        <small>{pricingMode === "escopo" ? "por escopo" : "evolução mensal"}</small>
+                        {plan.monthlyNote && <small>{plan.monthlyNote}</small>}
                       </div>
                       <p>{plan.description}</p>
                     </div>
@@ -722,6 +701,7 @@ function App() {
 
         <section id="faq" className="section-shell faq-section" aria-labelledby="faq-title">
           <SectionIntro
+            titleId="faq-title"
             center
             eyebrow="FAQ"
             title="Dúvidas comuns antes de começar"
@@ -738,12 +718,17 @@ function App() {
                     <button
                       type="button"
                       aria-expanded={isOpen}
+                      aria-controls={`faq-answer-${index}`}
                       onClick={() => setActiveFaq(isOpen ? -1 : index)}
                     >
                       <span>{faq.question}</span>
                       <i aria-hidden="true" />
                     </button>
-                    <div className="faq-answer" aria-hidden={!isOpen}>
+                    <div
+                      id={`faq-answer-${index}`}
+                      className="faq-answer"
+                      aria-hidden={!isOpen}
+                    >
                       <p>{faq.answer}</p>
                     </div>
                   </article>
@@ -765,7 +750,7 @@ function App() {
               próximo passo é uma página, uma agenda ou um painel de organização
             </p>
             <a className="btn-primary" href={ctaUrl} target="_blank" rel="noreferrer">
-              Quero uma análise gratuita
+              Quero uma análise inicial
             </a>
           </div>
         </section>
@@ -801,7 +786,7 @@ function App() {
                 WhatsApp
               </a>
               <a href={ctaUrl} target="_blank" rel="noreferrer">
-                Análise gratuita
+                Análise inicial
               </a>
             </div>
           </div>
@@ -825,62 +810,23 @@ function Brand() {
   );
 }
 
-function DynamicWord({ word }: { word: string }) {
-  const measureRef = useRef<HTMLDivElement | null>(null);
-  const [wordWidth, setWordWidth] = useState<number | null>(null);
-
-  useLayoutEffect(() => {
-    const measure = () => {
-      const activeMeasure = measureRef.current?.querySelector<HTMLElement>(
-        `[data-word="${word}"]`,
-      );
-
-      if (activeMeasure) {
-        setWordWidth(activeMeasure.offsetWidth);
-      }
-    };
-
-    measure();
-    window.addEventListener("resize", measure);
-
-    return () => window.removeEventListener("resize", measure);
-  }, [word]);
-
-  return (
-    <span
-      className="dynamic-word"
-      aria-live="polite"
-      style={wordWidth ? { width: `${wordWidth}px` } : undefined}
-    >
-      <span ref={measureRef} className="dynamic-word__measure" aria-hidden="true">
-        {dynamicWords.map((word) => (
-          <span data-word={word} key={word}>
-            {word}
-          </span>
-        ))}
-      </span>
-      <span className="dynamic-word__item" key={word}>
-        {word}
-      </span>
-    </span>
-  );
-}
-
 function SectionIntro({
   eyebrow,
   title,
   text,
   center,
+  titleId,
 }: {
   eyebrow: string;
   title: string;
   text: string;
   center?: boolean;
+  titleId?: string;
 }) {
   return (
     <div className={center ? "section-intro section-intro--center" : "section-intro"} data-reveal>
       <p className={`eyebrow ${center ? "justify-center" : ""}`}>{eyebrow}</p>
-      <SplitTitle text={title} />
+      <SplitTitle id={titleId} text={title} />
       <p className="section-copy">{text}</p>
     </div>
   );

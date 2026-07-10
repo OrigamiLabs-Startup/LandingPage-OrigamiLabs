@@ -1172,20 +1172,23 @@ li::before {
 .pricing-card__price {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
   margin-top: 1.5rem;
 }
 
 .pricing-card__price strong {
   font-family: "Space Grotesk", Inter, system-ui, sans-serif;
-  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-size: clamp(1.85rem, 3vw, 2.55rem);
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
 }
 
 .pricing-card__price small {
-  color: #c7c7c7;
-  font-size: 0.92rem;
+  color: #a7a7a7;
+  font-size: 0.78rem;
+  line-height: 1.2;
 }
 
 .pricing-card p {
