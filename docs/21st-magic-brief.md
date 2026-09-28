@@ -1,53 +1,58 @@
-# Brief para refinamento externo 21st.dev
+# Brief visual da landing Origami Lab
 
 ## Contexto
 
-Projeto: Origami Labs landing page.
+Projeto: landing institucional da Origami Lab e quatro páginas de solução.
 
-Objetivo: aumentar conversas qualificadas pelo WhatsApp para tres entregas premium:
+Objetivo: iniciar a prospecção com uma presença digital clara, profissional e honesta, conduzindo conversas qualificadas pelo WhatsApp para:
 
-- Origami Sites: landing pages e sites de apresentacao.
-- Origami Agenda: agendas personalizadas para atendimento.
-- Origami Dashboard: paineis internos para leads, propostas, rotina e indicadores simples.
+- Landing pages: apresentar uma oferta e encaminhar o visitante ao contato.
+- Dashboards: reunir prioridades, indicadores e próximos passos.
+- Cardápios digitais: organizar produtos e facilitar o pedido.
+- Software personalizado: resolver um processo específico com o menor escopo útil.
 
-## Direcao visual
+## Direção visual atual
 
-- Tema escuro, monocromatico, SaaS premium.
-- Inspiracao: Linear, Apple, 21st.dev e produtos digitais minimalistas.
-- Evitar roxo generico, orbs decorativos, visual de agencia barata, excesso de glassmorphism e grids repetitivos.
-- Usar imagens reais de produto em `public/`: `dashboard.jpeg`, `agenda.png`, `landing-slice.png`.
-- Não usar `landing-page.png` inteira como peça principal. O recorte `landing-slice.png` já existe para prova visual leve.
+- Base clara, fundo branco, superfícies suaves e verde oliva como cor de ação.
+- Estrutura arejada de produto SaaS, derivada dos padrões gerais auditados nas referências Framer, especialmente Qarin, sem copiar código, assets ou expressão visual substancial.
+- Headline forte, pouco texto por bloco, mockup de produto cedo e ritmo alternado entre explicação, demonstração, processo, escopo, FAQ e CTA.
+- Evitar gradientes roxos genéricos, glows aleatórios, excesso de glassmorphism, cards repetitivos e decoração sem função.
+- Não usar screenshots com pessoas, dados pessoais, contexto clínico, endereços potencialmente reais ou métricas de procedência não confirmada.
+- As demonstrações públicas são mockups próprios renderizados em React/CSS em `src/App.tsx` e `src/styles.css`, sempre rotulados como ilustrativos ou fictícios.
+- Os antigos arquivos `dashboard.jpeg`, `agenda.png`, `landing-demo.png`, `landing-slice.png` e `cardapio-demo.png` foram removidos do pacote público.
 
-## Conversao
+## Conversão
 
-CTA primario: `Chamar no WhatsApp`.
+CTA primário: `Conversar no WhatsApp`.
 
-Promessa central: pequenas empresas não precisam começar com sistemas complexos. Elas precisam de uma estrutura digital clara, bonita e útil para vender, atender ou organizar.
+Promessa central: tecnologia que organiza o que hoje trava o negócio, começando pelo menor escopo útil.
 
 O visitante deve entender rapidamente se precisa de:
 
-1. Uma landing page para apresentar e converter.
-2. Uma agenda para organizar horários e solicitações.
-3. Um dashboard para enxergar leads, propostas e prioridades.
+1. Uma landing page para apresentar e vender.
+2. Um dashboard para acompanhar e decidir.
+3. Um cardápio digital para facilitar a escolha.
+4. Um software personalizado para organizar um processo específico.
 
-## Blocos que podem ser refinados
+O orçamento nasce do contexto, do escopo e da complexidade. Não inventar preço fixo, prazo, resultado garantido, case ou prova social.
 
-1. Hero split com copy forte + dashboard como prova visual.
-2. Cards de solucoes com imagens reais e hierarquia mais premium.
-3. Secao de prova visual usando recorte da landing e agenda.
-4. Planos como filtros de conversa, não como tabela de preço convencional.
-5. CTA final com mais autoridade e menos linguagem generica.
+## Estrutura preservada
+
+1. Header compacto com navegação e CTA.
+2. Hero central com promessa, apoio, dois CTAs e demonstração visual.
+3. Síntese das quatro soluções.
+4. Problema, primeira versão e critérios de escopo.
+5. Demonstrações alternáveis com páginas próprias por solução.
+6. Processo em quatro etapas.
+7. FAQ factual.
+8. CTA final e rodapé.
 
 ## Restrições
 
 - Preservar React + TypeScript + Vite.
-- Preservar Lenis e GSAP para motion sutil.
-- Preservar tema escuro e paleta monocromatica.
-- Não trocar a página por template genérico.
-- Não inserir logos falsos, depoimentos inventados ou métricas irreais.
+- Preservar o sistema claro e a composição aprovada; não redesenhar sem novo briefing.
+- Não reutilizar bundles, código, assets, logos, pessoas, depoimentos, preços ou métricas das referências.
+- Não inserir logos falsos, depoimentos inventados, urgência artificial ou integrações não confirmadas.
 - Não criar dependências novas sem necessidade.
-- Manter responsivo e acessivel.
-
-## Prompt curto para usar no 21st.dev
-
-Refine the Origami Labs landing page as a premium dark SaaS service page for small businesses. Preserve the monochrome identity, WhatsApp conversion goal, real product screenshots, React TypeScript structure, GSAP/Lenis motion, and the three offers: Sites, Agenda, Dashboard. Improve only the hero, solution cards, visual proof, pricing filters, and final CTA. Avoid generic agency visuals, purple AI gradients, fake logos, fake testimonials, and decorative clutter.
+- Manter responsividade, foco visível, contraste, reduced motion e semântica.
+- Publicação externa depende de aprovação explícita e da confirmação do canal de WhatsApp.
