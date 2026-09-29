@@ -89,11 +89,13 @@ const services: Service[] = [
   },
 ];
 
-const projects: Array<{ name: string; type: string; summary: string; href: string; visual: Visual; index: string }> = [
-  { name: "Dashboard Origami", type: "Dashboard operacional", summary: "Prioridades, indicadores e andamento reunidos em uma leitura objetiva.", href: "/dashboards", visual: "dashboard", index: "01" },
-  { name: "Lava Jato", type: "Demo · software personalizado", summary: "Um fluxo ilustrativo para organizar entrada, execução e entrega de serviços.", href: "/software-personalizado", visual: "software", index: "02" },
-  { name: "Brasa do Bairro", type: "Demo · cardápio digital", summary: "Categorias, produtos e pedido organizados para uma escolha simples no celular.", href: "/cardapio-digital", visual: "menu", index: "03" },
-  { name: "Orion Elite", type: "Demo · landing page", summary: "Uma oferta apresentada com hierarquia, contexto e um próximo passo evidente.", href: "/sites", visual: "landing", index: "04" },
+type Project = { name: string; type: string; summary: string; href: string; visual: Visual; index: string; heroImage: string; heroImageWidth: number; heroImageHeight: number; heroAlt: string };
+
+const projects: Project[] = [
+  { name: "Dashboard Origami", type: "Dashboard operacional", summary: "Prioridades, indicadores e andamento reunidos em uma leitura objetiva.", href: "/dashboards", visual: "dashboard", index: "01", heroImage: "/hero-dashboard.webp", heroImageWidth: 1500, heroImageHeight: 837, heroAlt: "Captura demonstrativa de dashboard comercial da Origami" },
+  { name: "Lava Jato", type: "Demo · software personalizado", summary: "Um fluxo ilustrativo para organizar entrada, execução e entrega de serviços.", href: "/software-personalizado", visual: "software", index: "02", heroImage: "/hero-software.webp", heroImageWidth: 1400, heroImageHeight: 659, heroAlt: "Captura sanitizada de agenda administrativa como exemplo de software personalizado" },
+  { name: "Brasa do Bairro", type: "Demo · cardápio digital", summary: "Categorias, produtos e pedido organizados para uma escolha simples no celular.", href: "/cardapio-digital", visual: "menu", index: "03", heroImage: "/hero-cardapio.webp", heroImageWidth: 900, heroImageHeight: 478, heroAlt: "Captura demonstrativa de cardápio digital Brasa do Bairro" },
+  { name: "Orion Elite", type: "Demo · landing page", summary: "Uma oferta apresentada com hierarquia, contexto e um próximo passo evidente.", href: "/sites", visual: "landing", index: "04", heroImage: "/hero-landing.webp", heroImageWidth: 1600, heroImageHeight: 824, heroAlt: "Captura sanitizada de landing page esportiva Orion Elite" },
 ];
 
 const faqs = [
@@ -343,9 +345,9 @@ function Home({ navigate, ctaUrl, openFaq, setOpenFaq }: { navigate: (href: stri
               key={project.name}
               role="group"
               aria-roledescription="slide"
-              aria-label={`${index + 1} de ${projects.length}: ${project.name}`}
+              aria-label={`${index + 1} de ${projects.length}: ${project.heroAlt}`}
               aria-hidden={!active}
-            ><div className="product-window"><DemoCanvas visual={project.visual} compact /></div></article>;
+            ><div className="product-window"><img className="hero-product-image" src={project.heroImage} alt={project.heroAlt} width={project.heroImageWidth} height={project.heroImageHeight} loading="eager" decoding="async" fetchPriority={index === 0 ? "high" : "auto"} /></div></article>;
           })}
         </div>
       </div>

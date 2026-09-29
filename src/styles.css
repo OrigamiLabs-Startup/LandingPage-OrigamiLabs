@@ -75,6 +75,7 @@ img { display: block; max-width: 100%; filter: grayscale(1); }
 .hero-product.is-next { z-index: 3; top: 46px; transform: translateX(-50%) scale(.965); filter: blur(.6px); opacity: .82; pointer-events: none; }
 .hero-product.is-mid { z-index: 2; top: 22px; transform: translateX(-50%) scale(.93); filter: blur(1.2px); opacity: .62; pointer-events: none; }
 .hero-product.is-back { z-index: 1; top: 0; transform: translateX(-50%) scale(.895); filter: blur(1.8px); opacity: .42; pointer-events: none; }
+.hero-product-image { width: 100%; aspect-ratio: 16 / 8.5; object-fit: cover; object-position: center top; filter: none; }
 
 .hero-separator { min-height: 290px; display: flex; align-items: flex-end; background: #080808; color: #fff; padding: 180px 0 3rem; }
 .hero-separator .container { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; border-top: 1px solid #2b2b2b; padding-top: 1.5rem; }
