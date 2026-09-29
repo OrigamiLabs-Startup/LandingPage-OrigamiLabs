@@ -311,35 +311,16 @@ function Header({ navigate, ctaUrl, menuOpen, setMenuOpen }: { navigate: (href: 
 
 function Home({ navigate, ctaUrl, openFaq, setOpenFaq }: { navigate: (href: string) => void; ctaUrl: string; openFaq: number | null; setOpenFaq: (value: number | null) => void }) {
   const [activeProject, setActiveProject] = useState(0);
-  const [carouselPaused, setCarouselPaused] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
-  const heroShowcaseRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const showcase = heroShowcaseRef.current;
-    if (!showcase) return;
-    const pauseForFocus = () => setCarouselPaused(true);
-    const resumeAfterFocus = (event: FocusEvent) => {
-      if (!showcase.contains(event.relatedTarget as Node | null)) setCarouselPaused(false);
-    };
-    showcase.addEventListener("focusin", pauseForFocus);
-    showcase.addEventListener("focusout", resumeAfterFocus);
-    return () => {
-      showcase.removeEventListener("focusin", pauseForFocus);
-      showcase.removeEventListener("focusout", resumeAfterFocus);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (prefersReducedMotion || carouselPaused) return;
+    if (prefersReducedMotion) return;
     const timer = window.setInterval(() => {
-      if (heroShowcaseRef.current?.contains(document.activeElement)) return;
       setActiveProject((current) => (current + 1) % projects.length);
     }, 4800);
     return () => window.clearInterval(timer);
-  }, [carouselPaused, prefersReducedMotion]);
+  }, [prefersReducedMotion]);
 
-  const selectProject = (index: number) => setActiveProject(index);
   const slidePosition = (index: number) => {
     const offset = (index - activeProject + projects.length) % projects.length;
     return ["is-active", "is-next", "is-mid", "is-back"][offset];
@@ -349,13 +330,10 @@ function Home({ navigate, ctaUrl, openFaq, setOpenFaq }: { navigate: (href: stri
     <section className="hero section-pad">
       <div className="container hero-copy"><span className="section-tag"><Sparkles size={14} /> Tecnologia sob medida</span><h1 tabIndex={-1}>Tecnologia que organiza o que hoje trava seu negócio</h1><p>Criamos landing pages, dashboards, cardápios digitais e softwares personalizados para apresentar, atender e operar melhor.</p><div className="hero-actions"><a className="button button-primary" href={ctaUrl} target="_blank" rel="noopener noreferrer">Conversar no WhatsApp <ArrowRight size={17} /></a><InternalLink className="button button-secondary" href="/#solucoes" navigate={navigate}>Conheça as soluções</InternalLink></div></div>
       <div
-        ref={heroShowcaseRef}
         className="container hero-showcase reveal"
         role="region"
         aria-roledescription="carrossel"
         aria-label="Demonstrações conceituais de produtos Origami"
-        onMouseEnter={() => setCarouselPaused(true)}
-        onMouseLeave={() => setCarouselPaused(false)}
       >
         <div className="hero-product-stack">
           {projects.map((project, index) => {
@@ -367,21 +345,9 @@ function Home({ navigate, ctaUrl, openFaq, setOpenFaq }: { navigate: (href: stri
               aria-roledescription="slide"
               aria-label={`${index + 1} de ${projects.length}: ${project.name}`}
               aria-hidden={!active}
-            ><div className="hero-product-label"><span>{project.index}</span><div><strong>{project.name}</strong><small>{project.type}</small></div></div><div className="product-window"><WindowBar label={project.name} /><DemoCanvas visual={project.visual} compact /></div></article>;
+            ><div className="product-window"><DemoCanvas visual={project.visual} compact /></div></article>;
           })}
         </div>
-        <div className="hero-carousel-controls" aria-label="Escolher demonstração">
-          {projects.map((project, index) => <button
-            type="button"
-            className={index === activeProject ? "is-active" : ""}
-            aria-pressed={index === activeProject}
-            aria-label={`Mostrar ${project.name}`}
-            onClick={() => selectProject(index)}
-            key={project.name}
-          ><span>{project.index}</span><strong>{project.name}</strong></button>)}
-        </div>
-        <p className="carousel-status" aria-live="polite">Exibindo {projects[activeProject].name}</p>
-        <p className="showcase-disclaimer">Interfaces e dados conceituais para demonstrar possibilidades — não representam resultados de clientes.</p>
       </div>
     </section>
     <section className="hero-separator" aria-label="Princípio de trabalho"><div className="container"><span>Clareza antes da complexidade</span><p>Quatro formatos, uma mesma forma de pensar: começar pela necessidade real.</p></div></section>
