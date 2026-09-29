@@ -52,6 +52,18 @@ const services: Service[] = [
     deliverables: ["Arquitetura de conteúdo", "Interface responsiva", "Contato como ação principal"],
   },
   {
+    slug: "/cardapio-digital",
+    nav: "Cardápio digital",
+    eyebrow: "Facilitar a escolha",
+    title: "Produtos organizados para o cliente escolher e pedir com menos atrito",
+    summary: "Um link ou QR Code que complementa o cardápio físico e leva categorias, produtos e pedido até o WhatsApp.",
+    problem: "Produtos, preços e disponibilidade se perdem entre fotos, mensagens e materiais impressos",
+    outcome: "Um menu fácil de compartilhar, atualizar e consultar no celular",
+    visual: "menu",
+    icon: QrCode,
+    deliverables: ["Link e QR Code", "Categorias organizadas", "Pedido encaminhado ao WhatsApp"],
+  },
+  {
     slug: "/dashboards",
     nav: "Dashboards",
     eyebrow: "Acompanhar e decidir",
@@ -62,18 +74,6 @@ const services: Service[] = [
     visual: "dashboard",
     icon: BarChart3,
     deliverables: ["Indicadores essenciais", "Prioridades visíveis", "Fluxo adaptado à operação"],
-  },
-  {
-    slug: "/cardapio-digital",
-    nav: "Cardápios digitais",
-    eyebrow: "Facilitar a escolha",
-    title: "Produtos organizados para o cliente escolher e pedir com menos atrito",
-    summary: "Um link ou QR Code que complementa o cardápio físico e leva categorias, produtos e pedido até o WhatsApp.",
-    problem: "Produtos, preços e disponibilidade se perdem entre fotos, mensagens e materiais impressos",
-    outcome: "Um menu fácil de compartilhar, atualizar e consultar no celular",
-    visual: "menu",
-    icon: QrCode,
-    deliverables: ["Link e QR Code", "Categorias organizadas", "Pedido encaminhado ao WhatsApp"],
   },
   {
     slug: "/software-personalizado",
@@ -106,6 +106,21 @@ const faqs = [
 ];
 
 type TransitionPhase = "idle" | "cover" | "reveal";
+
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
+
+  return prefersReducedMotion;
+}
 
 function App() {
   const [path, setPath] = useState(window.location.pathname);
@@ -295,17 +310,83 @@ function Header({ navigate, ctaUrl, menuOpen, setMenuOpen }: { navigate: (href: 
 }
 
 function Home({ navigate, ctaUrl, openFaq, setOpenFaq }: { navigate: (href: string) => void; ctaUrl: string; openFaq: number | null; setOpenFaq: (value: number | null) => void }) {
+  const [activeProject, setActiveProject] = useState(0);
+  const [carouselPaused, setCarouselPaused] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const heroShowcaseRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const showcase = heroShowcaseRef.current;
+    if (!showcase) return;
+    const pauseForFocus = () => setCarouselPaused(true);
+    const resumeAfterFocus = (event: FocusEvent) => {
+      if (!showcase.contains(event.relatedTarget as Node | null)) setCarouselPaused(false);
+    };
+    showcase.addEventListener("focusin", pauseForFocus);
+    showcase.addEventListener("focusout", resumeAfterFocus);
+    return () => {
+      showcase.removeEventListener("focusin", pauseForFocus);
+      showcase.removeEventListener("focusout", resumeAfterFocus);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion || carouselPaused) return;
+    const timer = window.setInterval(() => {
+      if (heroShowcaseRef.current?.contains(document.activeElement)) return;
+      setActiveProject((current) => (current + 1) % projects.length);
+    }, 4800);
+    return () => window.clearInterval(timer);
+  }, [carouselPaused, prefersReducedMotion]);
+
+  const selectProject = (index: number) => setActiveProject(index);
+  const slidePosition = (index: number) => {
+    const offset = (index - activeProject + projects.length) % projects.length;
+    return ["is-active", "is-next", "is-mid", "is-back"][offset];
+  };
+
   return <>
     <section className="hero section-pad">
       <div className="container hero-copy"><span className="section-tag"><Sparkles size={14} /> Tecnologia sob medida</span><h1 tabIndex={-1}>Tecnologia que organiza o que hoje trava seu negócio</h1><p>Criamos landing pages, dashboards, cardápios digitais e softwares personalizados para apresentar, atender e operar melhor.</p><div className="hero-actions"><a className="button button-primary" href={ctaUrl} target="_blank" rel="noopener noreferrer">Conversar no WhatsApp <ArrowRight size={17} /></a><InternalLink className="button button-secondary" href="/#solucoes" navigate={navigate}>Conheça as soluções</InternalLink></div></div>
-      <div className="container hero-showcase reveal" aria-label="Quatro demonstrações conceituais de produtos Origami">
-        {projects.map((project) => <article className={`hero-product hero-product-card hero-product-${project.visual}`} key={project.name}><div className="hero-product-label"><span>{project.index}</span><div><strong>{project.name}</strong><small>{project.type}</small></div></div><div className="product-window"><WindowBar label={project.name} /><DemoCanvas visual={project.visual} compact /></div></article>)}
+      <div
+        ref={heroShowcaseRef}
+        className="container hero-showcase reveal"
+        role="region"
+        aria-roledescription="carrossel"
+        aria-label="Demonstrações conceituais de produtos Origami"
+        onMouseEnter={() => setCarouselPaused(true)}
+        onMouseLeave={() => setCarouselPaused(false)}
+      >
+        <div className="hero-product-stack">
+          {projects.map((project, index) => {
+            const active = index === activeProject;
+            return <article
+              className={`hero-product hero-product-card hero-product-${project.visual} ${slidePosition(index)}`}
+              key={project.name}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${index + 1} de ${projects.length}: ${project.name}`}
+              aria-hidden={!active}
+            ><div className="hero-product-label"><span>{project.index}</span><div><strong>{project.name}</strong><small>{project.type}</small></div></div><div className="product-window"><WindowBar label={project.name} /><DemoCanvas visual={project.visual} compact /></div></article>;
+          })}
+        </div>
+        <div className="hero-carousel-controls" aria-label="Escolher demonstração">
+          {projects.map((project, index) => <button
+            type="button"
+            className={index === activeProject ? "is-active" : ""}
+            aria-pressed={index === activeProject}
+            aria-label={`Mostrar ${project.name}`}
+            onClick={() => selectProject(index)}
+            key={project.name}
+          ><span>{project.index}</span><strong>{project.name}</strong></button>)}
+        </div>
+        <p className="carousel-status" aria-live="polite">Exibindo {projects[activeProject].name}</p>
         <p className="showcase-disclaimer">Interfaces e dados conceituais para demonstrar possibilidades — não representam resultados de clientes.</p>
       </div>
     </section>
     <section className="hero-separator" aria-label="Princípio de trabalho"><div className="container"><span>Clareza antes da complexidade</span><p>Quatro formatos, uma mesma forma de pensar: começar pela necessidade real.</p></div></section>
 
-    <section className="intro section-pad" id="solucoes"><div className="container"><SectionHeading title="Tudo para apresentar, acompanhar e organizar melhor" text="Não começamos pela ferramenta. Começamos pelo ponto de atrito e desenhamos a solução que deixa o próximo passo mais claro." /><div className="benefit-grid reveal"><article><MonitorSmartphone size={25} /><h3>Apresente com clareza</h3><p>Organize oferta, produtos e informações para que o cliente entenda mais rápido.</p></article><article><BarChart3 size={25} /><h3>Acompanhe o que importa</h3><p>Reúna prioridades e indicadores em uma visão que ajuda a decidir.</p></article><article><Code2 size={25} /><h3>Resolva o seu processo</h3><p>Crie uma ferramenta alinhada à rotina, sem adaptar o negócio a um sistema genérico.</p></article></div></div></section>
+    <section className="intro section-pad" id="solucoes"><div className="container"><SectionHeading tag="Serviços" title="Quais soluções a Origami oferece" text="Quatro caminhos para apresentar melhor sua oferta, facilitar escolhas, acompanhar informações e resolver processos específicos." /><div className="service-offer-grid reveal">{services.map((item, index) => { const Icon = item.icon; return <InternalLink className="service-offer" href={item.slug} navigate={navigate} key={item.slug}><div className="service-offer-top"><span>0{index + 1}</span><Icon size={24} /></div><h3>{item.nav}</h3><p>{item.summary}</p><b>Conhecer solução <ArrowRight size={16} /></b></InternalLink>; })}</div></div></section>
 
     <section className="visibility section-pad"><div className="container visibility-grid"><div className="visibility-copy"><h2>Veja a solução antes de transformar a conversa em um projeto enorme</h2><p>Cada proposta começa com uma demonstração clara do que pode ser organizado agora. Você entende a direção, o escopo e o que fica para depois.</p><ul><li><Check size={16} /> Problema e prioridade identificados</li><li><Check size={16} /> Primeira versão com limites visíveis</li><li><Check size={16} /> Evolução baseada no uso real</li></ul></div><div className="clarity-board reveal" aria-label="Como organizamos a primeira versão"><div className="clarity-top"><span>Escopo da primeira versão</span></div><div className="clarity-row"><div><strong>Necessidade principal</strong><small>O que hoje atrapalha a apresentação ou a operação?</small></div></div><div className="clarity-row"><div><strong>Fluxo essencial</strong><small>Qual caminho precisa funcionar do início ao fim?</small></div></div><div className="clarity-row"><div><strong>Próxima evolução</strong><small>O que só entra quando o uso justificar?</small></div></div><div className="clarity-summary"><div><small>Resultado</small><strong>Uma primeira versão utilizável</strong></div><ArrowRight /></div></div></div></section>
 
