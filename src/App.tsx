@@ -631,6 +631,45 @@ function FinalCta({ ctaUrl, label = "uma solução digital" }: { ctaUrl: string;
 
 function NotFound({ navigate }: { navigate: (href: string) => void }) { return <section className="not-found section-pad"><div className="container"><span className="section-tag">Página não encontrada</span><h1 tabIndex={-1}>Esse endereço não faz parte das soluções Origami</h1><p>Volte ao início para conhecer as soluções disponíveis.</p><InternalLink className="button button-primary" href="/" navigate={navigate}>Voltar ao início <ArrowRight size={17} /></InternalLink></div></section>; }
 
-function Footer({ navigate, ctaUrl }: { navigate: (href: string) => void; ctaUrl: string }) { return <footer><div className="container footer-grid"><div><InternalLink className="brand footer-brand" href="/" navigate={navigate}><img src="/logo.png" alt="" width="32" height="32" /><span>Origami Lab</span></InternalLink><p>Soluções digitais sob medida para necessidades reais de pequenos negócios.</p><small>João Pessoa, Paraíba. © 2026</small></div><div><strong>Soluções</strong>{services.map((item) => <InternalLink href={item.slug} navigate={navigate} key={item.slug}>{item.nav}</InternalLink>)}</div><div><strong>Explorar</strong><InternalLink href="/#processo" navigate={navigate}>Como funciona</InternalLink><InternalLink href="/#demonstracoes" navigate={navigate}>Demonstrações</InternalLink><InternalLink href="/#duvidas" navigate={navigate}>Dúvidas</InternalLink></div><div><strong>Contato</strong><a href={ctaUrl} target="_blank" rel="noopener noreferrer">WhatsApp</a><span>João Pessoa, PB</span></div></div></footer>; }
+function Footer({ navigate, ctaUrl }: { navigate: (href: string) => void; ctaUrl: string }) {
+  return <footer className="site-footer">
+    <div className="container footer-main">
+      <section className="footer-intro" aria-labelledby="footer-title">
+        <span className="footer-kicker">Tecnologia sob medida · João Pessoa</span>
+        <h2 id="footer-title">Uma base digital clara para o negócio avançar</h2>
+        <p>Landing pages, dashboards, cardápios digitais e softwares personalizados construídos a partir da necessidade real.</p>
+        <a className="footer-cta" href={ctaUrl} target="_blank" rel="noopener noreferrer">Conversar sobre meu projeto <ArrowRight size={17} /></a>
+      </section>
+
+      <nav className="footer-navigation" aria-label="Navegação do rodapé">
+        <div className="footer-column">
+          <strong>Soluções</strong>
+          {services.map((item) => <InternalLink href={item.slug} navigate={navigate} key={item.slug}>{item.nav}</InternalLink>)}
+        </div>
+        <div className="footer-column">
+          <strong>Explorar</strong>
+          <InternalLink href="/#solucoes" navigate={navigate}>Visão geral</InternalLink>
+          <InternalLink href="/#processo" navigate={navigate}>Como funciona</InternalLink>
+          <InternalLink href="/#demonstracoes" navigate={navigate}>Demonstrações</InternalLink>
+          <InternalLink href="/#duvidas" navigate={navigate}>Dúvidas</InternalLink>
+        </div>
+        <div className="footer-column footer-contact">
+          <strong>Contato</strong>
+          <a href={ctaUrl} target="_blank" rel="noopener noreferrer">WhatsApp <ArrowRight size={14} /></a>
+          <span>João Pessoa, Paraíba</span>
+          <small>Envie apenas as informações necessárias para entendermos o projeto.</small>
+        </div>
+      </nav>
+    </div>
+
+    <div className="container footer-divider" />
+    <div className="container footer-signature" aria-hidden="true">Origami Lab</div>
+    <div className="container footer-bottom">
+      <small>© 2026 Origami Lab</small>
+      <span>Tecnologia com escopo claro e evolução consciente</span>
+      <InternalLink href="/#conteudo" navigate={navigate}>Voltar ao início <ArrowRight size={14} /></InternalLink>
+    </div>
+  </footer>;
+}
 
 export default App;
