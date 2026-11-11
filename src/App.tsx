@@ -550,7 +550,6 @@ function DetailedServicePage({ service, navigate, ctaUrl }: { service: Service; 
         <div className="service-real-frame">
           <img src={detail.image} width={detail.imageWidth} height={detail.imageHeight} alt={detail.imageAlt} fetchPriority="high" />
         </div>
-        <figcaption>{detail.imageCaption}</figcaption>
       </figure>
     </section>
 

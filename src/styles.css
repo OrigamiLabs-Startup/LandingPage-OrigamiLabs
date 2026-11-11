@@ -269,8 +269,7 @@ img { display: block; max-width: 100%; filter: grayscale(1); }
 .service-real-stage { margin-top: 4rem; }
 .service-real-frame { aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid #202020; border-radius: var(--radius); background: #111; padding: 10px; box-shadow: 0 32px 90px rgba(0,0,0,.14); }
 .service-real-frame img { width: 100%; max-width: none; height: 100%; display: block; border-radius: calc(var(--radius) - 7px); object-fit: cover; object-position: top center; filter: none; }
-.service-real-stage figcaption { margin-top: .75rem; color: var(--muted); font-size: .82rem; line-height: 1.5; text-align: right; }
-.service-context { margin-top: 2rem; background: #0b0b0b; color: #fff; }
+.service-context { margin-top: 4rem; background: #0b0b0b; color: #fff; }
 .service-context-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(3rem,7vw,7rem); align-items: start; }
 .service-context .section-tag { color: #aaa; }
 .service-context h2 { max-width: 760px; margin: .9rem 0 0; font-size: clamp(2.5rem,4.7vw,4.45rem); font-weight: 510; line-height: 1; letter-spacing: -.055em; text-wrap: balance; }
@@ -416,7 +415,7 @@ img { display: block; max-width: 100%; filter: grayscale(1); }
   .footer-bottom a { min-height: 44px; justify-self: start; }
   .service-stage { margin-top: 2.5rem; }
   .service-real-stage { margin-top: 2.5rem; }
-  .service-context { margin-top: 1.5rem; }
+  .service-context { margin-top: 2.5rem; }
   .service-context-grid, .service-faq-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .service-principle-list article { grid-template-columns: auto 1fr; gap: .7rem 1rem; }
   .service-principle-list article p { grid-column: 2; }
@@ -431,7 +430,6 @@ img { display: block; max-width: 100%; filter: grayscale(1); }
   .service-hero-detailed h1 { font-size: clamp(2.45rem,11vw,3.35rem); line-height: 1; }
   .service-real-frame { position: relative; aspect-ratio: 1.18 / 1; border-radius: 14px; padding: 5px; }
   .service-real-frame img { position: absolute; inset: 5px auto 5px 5px; width: auto; max-width: none; height: calc(100% - 10px); border-radius: 10px; }
-  .service-real-stage figcaption { text-align: left; }
   .service-context h2 { font-size: clamp(2.35rem,10vw,3.2rem); }
   .service-principle-list article { padding: 1.4rem 0; }
   .service-process-track { grid-template-columns: 1fr; }
